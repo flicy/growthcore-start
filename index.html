@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrowthCore — AI 实践者的增长社群</title>
+<meta name="description" content="GrowthCore 是以增长为核心的 AI 实践者社群。互信值机制让你的每一份贡献可量化、可流通、可变现。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ========== Reset & Variables ========== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FAFAF9;
+  --bg-warm: #F5F3EF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FEFEFE;
+  --bg-dark: #1A1A1A;
+  --bg-dark-card: #242424;
+  --surface: #F0EEEB;
+  --surface-hover: #E8E5E0;
+
+  --ink: #1A1A1A;
+  --ink-secondary: #52525B;
+  --ink-tertiary: #A1A1AA;
+  --ink-faint: #D4D4D8;
+  --ink-on-dark: #F4F4F5;
+  --ink-on-dark-secondary: #A1A1AA;
+
+  --accent: #E85D3A;
+  --accent-soft: rgba(232, 93, 58, 0.08);
+  --accent-medium: rgba(232, 93, 58, 0.15);
+  --accent-hover: #D14E2E;
+
+  --blue: #3B82F6;
+  --blue-soft: rgba(59, 130, 246, 0.08);
+  --orange: #F59E0B;
+  --orange-soft: rgba(245, 158, 11, 0.08);
+  --pink: #EC4899;
+  --pink-soft: rgba(236, 72, 153, 0.08);
+  --teal: #14B8A6;
+  --teal-soft: rgba(20, 184, 166, 0.08);
+  --green: #22C55E;
+  --green-soft: rgba(34, 197, 94, 0.08);
+  --flower: #F43F5E;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-xl: 0 24px 64px rgba(0,0,0,0.10);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition: 0.3s var(--ease);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent-medium);
+  color: var(--ink);
+}
+
+/* ========== Typography ========== */
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ========== Layout ========== */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section {
+  padding: 120px 0;
+  position: relative;
+}
+
+/* ========== Section Headers ========== */
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.section-tag::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+.section-heading {
+  font-size: clamp(30px, 4.5vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.section-sub {
+  font-size: 17px;
+  color: var(--ink-secondary);
+  max-width: 580px;
+  line-height: 1.8;
+}
+
+/* ========== Nav ========== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0;
+  background: rgba(250, 250, 249, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: var(--transition);
+}
+
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.nav-logo {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.02em;
+}
+
+.nav-logo .logo-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: white;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--ink-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.nav-links a:hover {
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.nav-cta {
+  background: var(--ink) !important;
+  color: white !important;
+  padding: 8px 18px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  margin-left: 6px;
+}
+
+.nav-cta:hover {
+  background: #333 !important;
+}
+
+.nav-mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.nav-mobile-toggle:hover {
+  background: var(--surface);
+}
+
+/* ========== Hero ========== */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding-top: 64px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
+}
+
+.hero-glow {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 93, 58, 0.06) 0%, transparent 70%);
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  padding: 0 24px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 7px 16px 7px 10px;
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--ink-secondary);
+  margin-bottom: 36px;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  animation: fadeInDown 0.6s ease both;
+}
+
+.hero-badge .status-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  position: relative;
+}
+
+.hero-badge .status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: 0.3;
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.6); opacity: 0; }
+}
+
+.hero-title {
+  font-size: clamp(52px, 10vw, 88px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 16px;
+  color: var(--ink);
+  animation: fadeInUp 0.7s ease 0.1s both;
+}
+
+.hero-title .accent-word {
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: clamp(18px, 2.5vw, 22px);
+  color: var(--ink-secondary);
+  font-weight: 400;
+  margin-bottom: 28px;
+  line-height: 1.6;
+  animation: fadeInUp 0.7s ease 0.2s both;
+}
+
+.hero-statement {
+  font-size: 16px;
+  color: var(--ink-tertiary);
+  max-width: 480px;
+  margin: 0 auto 48px;
+  line-height: 1.8;
+  animation: fadeInUp 0.7s ease 0.3s both;
+}
+
+.hero-statement strong {
+  color: var(--ink-secondary);
+  font-weight: 600;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  animation: fadeInUp 0.7s ease 0.4s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary .arrow {
+  transition: transform 0.25s;
+}
+
+.btn-primary:hover .arrow { transform: translateX(3px); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  color: var(--ink);
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.btn-secondary:hover {
+  background: var(--surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--ink-tertiary);
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 1s ease 0.8s both;
+}
+
+.hero-scroll .scroll-line {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(180deg, var(--ink-tertiary), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ========== Role Selection (Game-like) ========== */
+#roles {
+  background: var(--bg-dark);
+  color: var(--ink-on-dark);
+  padding: 120px 0 140px;
+  position: relative;
+  overflow: hidden;
+}
+
+.roles-bg-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(232, 93, 58, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+#roles .section-tag { color: var(--accent); }
+#roles .section-tag::before { background: var(--accent); }
+#roles .section-heading { color: var(--ink-on-dark); }
+#roles .section-sub { color: var(--ink-on-dark-secondary); }
+
+.roles-instruction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-on-dark-secondary);
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.roles-instruction .blink-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: var(--accent);
+  animation: blink 1.2s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-top: 52px;
+}
+
+.role-card {
+  background: var(--bg-dark-card);
+  border: 1.5px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.35s var(--ease);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.role-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, var(--role-glow, rgba(232,93,58,0.06)));
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.role-card:hover::before { opacity: 1; }
+
+.role-card:hover {
+  border-color: var(--role-color, var(--accent));
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.4), 0 0 0 1px var(--role-color, var(--accent));
+}
+
+.role-card.selected {
+  border-color: var(--role-color, var(--accent));
+  box-shadow: 0 0 48px var(--role-glow, rgba(232,93,58,0.15)), 0 0 0 1px var(--role-color, var(--accent));
+}
+
+.role-card.selected::before { opacity: 1; }
+
+.role-card[data-role="builder"] { --role-color: #3B82F6; --role-glow: rgba(59,130,246,0.10); }
+.role-card[data-role="strategist"] { --role-color: #F59E0B; --role-glow: rgba(245,158,11,0.10); }
+.role-card[data-role="creator"] { --role-color: #EC4899; --role-glow: rgba(236,72,153,0.10); }
+.role-card[data-role="explorer"] { --role-color: #14B8A6; --role-glow: rgba(20,184,166,0.10); }
+.role-card[data-role="learner"] { --role-color: #22C55E; --role-glow: rgba(34,197,94,0.10); }
+
+.role-card .role-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  transition: all 0.35s var(--ease-spring);
+  position: relative;
+  z-index: 1;
+}
+
+.role-card:hover .role-icon {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.role-card.selected .role-icon {
+  background: var(--role-color);
+  border-color: var(--role-color);
+  box-shadow: 0 8px 24px var(--role-glow);
+}
+
+.role-name {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.role-name-en {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-on-dark-secondary);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.role-tagline {
+  font-size: 13px;
+  color: var(--ink-on-dark-secondary);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* Role expanded details */
+.role-expand {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s var(--ease), padding 0.45s;
+  position: relative;
+  z-index: 1;
+}
+
+.role-card.selected .role-expand {
+  max-height: 320px;
+  padding-top: 18px;
+}
+
+.role-expand-inner {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 16px;
+  text-align: left;
+}
+
+.role-stat-row {
+  margin-bottom: 12px;
+}
+
+.role-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-on-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.role-stat-value {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+
+/* Role selected toast */
+.role-toast {
+  margin-top: 40px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+  transition: all 0.5s var(--ease-spring);
+  pointer-events: none;
+}
+
+.role-toast.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.toast-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  padding: 20px 36px;
+  border-radius: var(--radius);
+}
+
+.toast-icon {
+  font-size: 28px;
+  animation: toast-bounce 0.6s var(--ease-spring);
+}
+
+@keyframes toast-bounce {
+  0% { transform: scale(0) rotate(-30deg); }
+  60% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.toast-text {
+  text-align: left;
+}
+
+.toast-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.toast-subtitle {
+  font-size: 13px;
+  color: var(--ink-on-dark-secondary);
+  margin-top: 2px;
+}
+
+.toast-role-name {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ========== Trust Dimensions ========== */
+#trust {
+  background: var(--bg);
+  padding-bottom: 100px;
+}
+
+.trust-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 60px;
+  margin-top: 52px;
+  align-items: start;
+}
+
+/* Radar chart */
+.trust-radar-wrap {
+  position: sticky;
+  top: 100px;
+}
+
+.trust-radar-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.radar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radar-title .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.radar-svg {
+  width: 100%;
+  height: auto;
+}
+
+.radar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.radar-legend-item {
+  font-size: 12px;
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.radar-legend-item .legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+/* Dimension cards */
+.trust-dims {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trust-dim {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius-sm);
+  transition: all 0.25s var(--ease);
+  cursor: default;
+}
+
+.trust-dim:hover {
+  border-color: rgba(0,0,0,0.12);
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
+}
+
+.trust-dim-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.trust-dim:nth-child(1) .trust-dim-icon { background: var(--accent-soft); }
+.trust-dim:nth-child(2) .trust-dim-icon { background: var(--blue-soft); }
+.trust-dim:nth-child(3) .trust-dim-icon { background: var(--teal-soft); }
+.trust-dim:nth-child(4) .trust-dim-icon { background: var(--orange-soft); }
+.trust-dim:nth-child(5) .trust-dim-icon { background: var(--pink-soft); }
+
+.trust-dim-body { flex: 1; }
+
+.trust-dim-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.trust-dim-desc {
+  font-size: 14px;
+  color: var(--ink-secondary);
+  line-height: 1.7;
+}
+
+/* ========== Flowers & Exchange ========== */
+#flowers {
+  background: var(--bg-warm);
+}
+
+.flowers-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 52px;
+}
+
+.card-block {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius);
+  padding: 36px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card-block:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-block-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.card-block h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.card-block p {
+  font-size: 15px;
+  color: var(--ink-secondary);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.flower-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.flower-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ink-secondary);
+  padding: 6px 0;
+}
+
+.flower-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--flower);
+  flex-shrink: 0;
+}
+
+/* Exchange grid */
+.exchange-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.exchange-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg-warm);
+  border-radius: var(--radius-xs);
+  transition: var(--transition);
+}
+
+.exchange-item:hover {
+  background: var(--surface-hover);
+}
+
+.exchange-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.exchange-cost {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--flower);
+  white-space: nowrap;
+  background: rgba(244, 63, 94, 0.06);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* Value Pool */
+.value-pool {
+  margin-top: 20px;
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius);
+  padding: 40px;
+  box-shadow: var(--shadow-sm);
+}
+
+.value-pool h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.value-pool > p {
+  font-size: 15px;
+  color: var(--ink-secondary);
+  margin-bottom: 32px;
+}
+
+.pool-bars {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pool-bar {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-warm);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.pool-bar-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.pool-bar-label {
+  font-size: 13px;
+  color: var(--ink-secondary);
+}
+
+/* ========== What We Do ========== */
+#whatwedo {
+  background: var(--bg);
+}
+
+.whatwedo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 52px;
+}
+
+.whatwedo-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius);
+  padding: 32px;
+  transition: all 0.25s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.whatwedo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.4s var(--ease);
+  border-radius: 0 2px 2px 0;
+}
+
+.whatwedo-card:hover::before { height: 100%; }
+
+.whatwedo-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.whatwedo-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.whatwedo-icon {
+  font-size: 28px;
+}
+
+.whatwedo-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+
+.whatwedo-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.whatwedo-card p {
+  font-size: 14px;
+  color: var(--ink-secondary);
+  line-height: 1.7;
+}
+
+/* ========== Rules / How To Play ========== */
+#rules {
+  background: var(--bg-warm);
+}
+
+.rules-steps {
+  margin-top: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.rules-steps::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--ink-faint));
+  border-radius: 1px;
+}
+
+.rule-step {
+  display: flex;
+  gap: 24px;
+  padding: 20px 0;
+  position: relative;
+}
+
+.rule-num {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--shadow-sm);
+}
+
+.rule-body {
+  flex: 1;
+  padding-top: 8px;
+}
+
+.rule-body h4 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.rule-body p {
+  font-size: 14px;
+  color: var(--ink-secondary);
+  line-height: 1.7;
+}
+
+/* Growth paths */
+.growth-paths-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 64px;
+  margin-bottom: 24px;
+}
+
+.growth-paths {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.path-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius-sm);
+  padding: 20px 16px;
+  text-align: center;
+  transition: all 0.25s var(--ease);
+  box-shadow: var(--shadow-sm);
+}
+
+.path-card:hover {
+  border-color: var(--path-color, var(--accent));
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.path-card[data-role="builder"] { --path-color: #3B82F6; }
+.path-card[data-role="strategist"] { --path-color: #F59E0B; }
+.path-card[data-role="creator"] { --path-color: #EC4899; }
+.path-card[data-role="explorer"] { --path-color: #14B8A6; }
+.path-card[data-role="learner"] { --path-color: #22C55E; }
+
+.path-emoji { font-size: 28px; margin-bottom: 8px; }
+.path-name { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+
+.path-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.path-level {
+  font-size: 12px;
+  color: var(--ink-tertiary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--bg-warm);
+  transition: var(--transition);
+}
+
+.path-card:hover .path-level {
+  color: var(--ink-secondary);
+}
+
+/* ========== Join / CTA ========== */
+#join {
+  background: var(--bg-dark);
+  color: var(--ink-on-dark);
+  text-align: center;
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.join-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, black 20%, transparent 100%);
+}
+
+.join-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 93, 58, 0.08), transparent 70%);
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.join-content {
+  position: relative;
+  z-index: 1;
+}
+
+#join .section-tag { color: var(--accent); }
+#join .section-tag::before { background: var(--accent); }
+
+.join-title {
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+
+.join-desc {
+  font-size: 17px;
+  color: var(--ink-on-dark-secondary);
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+
+.join-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.join-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: white;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.join-btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(232, 93, 58, 0.25);
+}
+
+.join-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--ink-on-dark);
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.join-btn-ghost:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
+
+.join-contacts {
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.join-contact {
+  font-size: 13px;
+  color: var(--ink-on-dark-secondary);
+}
+
+.join-contact span {
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+}
+
+/* ========== Footer ========== */
+footer {
+  background: var(--bg-dark);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 32px 0;
+  text-align: center;
+}
+
+footer p {
+  font-size: 13px;
+  color: var(--ink-on-dark-secondary);
+}
+
+/* ========== Falling Flowers ========== */
+.falling-flower {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  font-size: 18px;
+  animation: flower-fall linear forwards;
+  opacity: 0;
+}
+
+@keyframes flower-fall {
+  0% { opacity: 1; transform: translateY(-10px) rotate(0deg) scale(1); }
+  80% { opacity: 0.7; }
+  100% { opacity: 0; transform: translateY(100vh) rotate(540deg) scale(0.3); }
+}
+
+/* ========== Scroll Animations ========== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========== Survey Modal ========== */
+.survey-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease);
+  padding: 24px;
+}
+
+.survey-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.survey-modal {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(24px) scale(0.96);
+  transition: transform 0.4s var(--ease-spring);
+  position: relative;
+}
+
+.survey-overlay.active .survey-modal {
+  transform: translateY(0) scale(1);
+}
+
+.survey-modal-header {
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  padding: 28px 32px 0;
+  z-index: 2;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.survey-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface);
+  color: var(--ink-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  line-height: 1;
+}
+
+.survey-modal-close:hover {
+  background: var(--surface-hover);
+  color: var(--ink);
+}
+
+.survey-modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.survey-modal-subtitle {
+  font-size: 14px;
+  color: var(--ink-secondary);
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+.survey-modal-body {
+  padding: 24px 32px 32px;
+}
+
+.survey-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.survey-section-label:first-child {
+  margin-top: 0;
+}
+
+.survey-section-label::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+.survey-field {
+  margin-bottom: 18px;
+}
+
+.survey-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.survey-field input[type="text"],
+.survey-field textarea,
+.survey-field select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: var(--radius-xs);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.survey-field input[type="text"]:focus,
+.survey-field textarea:focus,
+.survey-field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.survey-field textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.survey-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.survey-check-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-warm);
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.survey-check-item:hover {
+  background: var(--surface-hover);
+}
+
+.survey-check-item input[type="checkbox"],
+.survey-check-item input[type="radio"] {
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+.survey-check-item input:checked + span {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.survey-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  margin-top: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.survey-btn-submit:hover {
+  background: #333;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.survey-btn-skip {
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-tertiary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  width: 100%;
+  transition: color 0.2s;
+}
+
+.survey-btn-skip:hover {
+  color: var(--ink-secondary);
+}
+
+/* Survey branch questions - hidden by default */
+.survey-branch {
+  display: none;
+}
+
+.survey-branch.active {
+  display: block;
+}
+
+/* Survey thanks state */
+.survey-thanks {
+  display: none;
+  text-align: center;
+  padding: 48px 32px;
+}
+
+.survey-thanks.active {
+  display: block;
+}
+
+.survey-thanks-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+  animation: toast-bounce 0.6s var(--ease-spring);
+}
+
+.survey-thanks-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.survey-thanks-desc {
+  font-size: 15px;
+  color: var(--ink-secondary);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.survey-thanks-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.survey-thanks-close:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(232, 93, 58, 0.2);
+}
+
+/* ========== Social Connect Section ========== */
+#social-connect {
+  background: var(--bg-dark);
+  padding: 80px 0;
+  position: relative;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+#social-connect .section-tag { color: var(--accent); }
+#social-connect .section-tag::before { background: var(--accent); }
+#social-connect .section-heading { color: var(--ink-on-dark); }
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.social-card {
+  background: var(--bg-dark-card);
+  border: 1.5px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: center;
+  transition: all 0.3s var(--ease);
+}
+
+.social-card:hover {
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+
+.social-card-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.social-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink-on-dark);
+  margin-bottom: 6px;
+}
+
+.social-card-desc {
+  font-size: 13px;
+  color: var(--ink-on-dark-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.social-card-qr {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: white;
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.social-card-qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.social-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s var(--ease);
+}
+
+.social-card-link:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232, 93, 58, 0.25);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 1024px) {
+  .roles-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .growth-paths {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .trust-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .trust-radar-wrap {
+    position: static;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  section { padding: 80px 0; }
+
+  .nav-links { display: none; }
+  .nav-mobile-toggle { display: block; }
+
+  nav.mobile-open .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(250, 250, 249, 0.97);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 16px 24px;
+    gap: 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    box-shadow: var(--shadow-lg);
+  }
+
+  nav.mobile-open .nav-links a {
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+
+  .roles-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .role-card { padding: 22px 14px; }
+  .role-card .role-icon { width: 52px; height: 52px; font-size: 26px; }
+  .role-name { font-size: 15px; }
+
+  .flowers-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .whatwedo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exchange-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pool-bars {
+    gap: 10px;
+  }
+
+  .pool-bar {
+    min-width: 110px;
+    padding: 16px;
+  }
+
+  .growth-paths {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .trust-radar-wrap {
+    max-width: 300px;
+  }
+
+  .join-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .join-contacts {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .social-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .survey-modal {
+    max-height: 90vh;
+  }
+
+  .survey-modal-header {
+    padding: 24px 20px 0;
+  }
+
+  .survey-modal-body {
+    padding: 20px 20px 28px;
+  }
+
+  .toast-inner {
+    padding: 16px 24px;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .roles-grid {
+    grid-template-columns: 1fr;
+  }
+  .growth-paths {
+    grid-template-columns: 1fr;
+  }
+  .hero-title {
+    letter-spacing: -0.03em;
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav id="navbar">
+  <div class="container">
+    <a href="#hero" class="nav-logo">
+      <span class="logo-mark">G</span>
+      <span>GrowthCore</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#roles">选角色</a></li>
+      <li><a href="#trust">互信值</a></li>
+      <li><a href="#flowers">小红花</a></li>
+      <li><a href="#whatwedo">社群</a></li>
+      <li><a href="#rules">规则</a></li>
+      <li><a href="#join" class="nav-cta">加入</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="菜单">☰</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="status-dot"></span>
+      招募中 · AI 实践者社群
+    </div>
+    <h1 class="hero-title">
+      Growth<span class="accent-word">Core</span>
+    </h1>
+    <p class="hero-subtitle">给每一个创造者，可量化的信任资产</p>
+    <p class="hero-statement">
+      你在社群里的分享、协作、传播、思考、陪跑，<br>
+      全部变成<strong>看得见的互信值</strong>，可流通，可变现。
+    </p>
+    <div class="hero-actions">
+      <a href="#roles" class="btn-primary">
+        选择你的角色 <span class="arrow">→</span>
+      </a>
+      <a href="#trust" class="btn-secondary">
+        了解互信值
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span class="scroll-line"></span>
+  </div>
+</section>
+
+<!-- Role Selection -->
+<section id="roles">
+  <div class="roles-bg-pattern"></div>
+  <div class="container">
+    <span class="section-tag reveal">选择角色</span>
+    <h2 class="section-heading reveal">你是哪一类创造者？</h2>
+    <p class="section-sub reveal" style="color: var(--ink-on-dark-secondary);">每个人进社群都有自己的角色。选一个最像你的。角色决定起点，但不限制行动。</p>
+    <div class="roles-instruction reveal">
+      <span class="blink-cursor"></span>
+      <span>点击选择你的初始角色</span>
+    </div>
+
+    <div class="roles-grid">
+      <div class="role-card reveal" data-role="builder" onclick="selectRole(this)">
+        <div class="role-icon">🔧</div>
+        <div class="role-name">构建者</div>
+        <div class="role-name-en">Builder</div>
+        <div class="role-tagline">能用 AI 和代码独立做出产品的人</div>
+        <div class="role-expand">
+          <div class="role-expand-inner">
+            <div class="role-stat-row">
+              <div class="role-stat-label">核心能力</div>
+              <div class="role-stat-value">前后端开发 · AI工具链 · Agent搭建 · MVP全流程</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能提供</div>
+              <div class="role-stat-value">技术实现 · 产品原型 · 开源工具 · 代码 Review</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能收获</div>
+              <div class="role-stat-value">商业视角 · 用户反馈 · 增长策略 · 协作项目</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card reveal" data-role="strategist" onclick="selectRole(this)">
+        <div class="role-icon">📐</div>
+        <div class="role-name">策略者</div>
+        <div class="role-name-en">Strategist</div>
+        <div class="role-tagline">从策略和商业层面看问题的人</div>
+        <div class="role-expand">
+          <div class="role-expand-inner">
+            <div class="role-stat-row">
+              <div class="role-stat-label">核心能力</div>
+              <div class="role-stat-value">产品规划 · 增长策略 · 数据分析 · 商业模式设计</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能提供</div>
+              <div class="role-stat-value">战略方向 · 增长方案 · 数据洞察 · 资源对接</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能收获</div>
+              <div class="role-stat-value">技术落地能力 · 一线实践反馈 · 快速验证机会</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card reveal" data-role="creator" onclick="selectRole(this)">
+        <div class="role-icon">🎨</div>
+        <div class="role-name">创作者</div>
+        <div class="role-name-en">Creator</div>
+        <div class="role-tagline">擅长内容生产和传播的人</div>
+        <div class="role-expand">
+          <div class="role-expand-inner">
+            <div class="role-stat-row">
+              <div class="role-stat-label">核心能力</div>
+              <div class="role-stat-value">内容创作 · 视觉设计 · 渠道运营 · SEO/GEO</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能提供</div>
+              <div class="role-stat-value">品牌内容 · 视觉物料 · 分发策略 · 社交传播</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能收获</div>
+              <div class="role-stat-value">产品素材 · 技术支持 · 商业化路径 · 创作者社群</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card reveal" data-role="explorer" onclick="selectRole(this)">
+        <div class="role-icon">🔭</div>
+        <div class="role-name">探索者</div>
+        <div class="role-name-en">Explorer</div>
+        <div class="role-tagline">有行业经验，正在探索 AI 结合的人</div>
+        <div class="role-expand">
+          <div class="role-expand-inner">
+            <div class="role-stat-row">
+              <div class="role-stat-label">核心能力</div>
+              <div class="role-stat-value">行业经验 · 商业判断力 · 真实业务场景</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能提供</div>
+              <div class="role-stat-value">行业洞察 · 业务需求 · 市场验证 · 跨界视角</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能收获</div>
+              <div class="role-stat-value">AI落地方案 · 技术伙伴 · 快速原型 · 社群资源</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card reveal" data-role="learner" onclick="selectRole(this)">
+        <div class="role-icon">🌱</div>
+        <div class="role-name">学习者</div>
+        <div class="role-name-en">Learner</div>
+        <div class="role-tagline">对 AI 感兴趣，核心需求是入门学习</div>
+        <div class="role-expand">
+          <div class="role-expand-inner">
+            <div class="role-stat-row">
+              <div class="role-stat-label">核心能力</div>
+              <div class="role-stat-value">学习意愿 · 其他领域经验 · 用户视角</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能提供</div>
+              <div class="role-stat-value">新手反馈 · 跨领域经验 · 内容传播 · 社群活跃</div>
+            </div>
+            <div class="role-stat-row">
+              <div class="role-stat-label">你能收获</div>
+              <div class="role-stat-value">AI入门指导 · 实践项目 · 学习路径 · 社群归属感</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="role-toast" id="roleToast">
+      <div class="toast-inner">
+        <span class="toast-icon">🎮</span>
+        <div class="toast-text">
+          <div class="toast-title">角色创建成功</div>
+          <div class="toast-subtitle">你选择了 <span class="toast-role-name" id="toastRoleName">构建者</span>，互信值之旅从这里开始</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust Dimensions -->
+<section id="trust">
+  <div class="container">
+    <span class="section-tag reveal">互信值</span>
+    <h2 class="section-heading reveal">社群里的「信任资产」</h2>
+    <p class="section-sub reveal">可量化、可流通、可变现。你在社群里的每一份真实贡献，都会变成看得见的数字。</p>
+
+    <div class="trust-layout">
+      <div class="trust-radar-wrap reveal">
+        <div class="trust-radar-card">
+          <div class="radar-title">
+            <span class="dot"></span>
+            互信值雷达图
+          </div>
+          <svg class="radar-svg" viewBox="0 0 320 320">
+            <g transform="translate(160, 160)">
+              <!-- Grid pentagons -->
+              <polygon points="0,-130 123.66,-40.19 76.43,105.19 -76.43,105.19 -123.66,-40.19" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <polygon points="0,-104 98.93,-32.15 61.14,84.15 -61.14,84.15 -98.93,-32.15" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <polygon points="0,-78 74.2,-24.11 45.86,63.11 -45.86,63.11 -74.2,-24.11" fill="none" stroke="rgba(0,0,0,0.04)" stroke-width="1"/>
+              <polygon points="0,-52 49.46,-16.08 30.57,42.08 -30.57,42.08 -49.46,-16.08" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="1"/>
+              <polygon points="0,-26 24.73,-8.04 15.29,21.04 -15.29,21.04 -24.73,-8.04" fill="none" stroke="rgba(0,0,0,0.02)" stroke-width="1"/>
+              <!-- Axes -->
+              <line x1="0" y1="0" x2="0" y2="-130" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <line x1="0" y1="0" x2="123.66" y2="-40.19" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <line x1="0" y1="0" x2="76.43" y2="105.19" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <line x1="0" y1="0" x2="-76.43" y2="105.19" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <line x1="0" y1="0" x2="-123.66" y2="-40.19" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <!-- Data shape -->
+              <polygon id="radarPoly"
+                points="0,-91 86.56,-28.13 61.14,84.15 -53.5,73.63 -74.2,-24.11"
+                fill="rgba(232, 93, 58, 0.10)"
+                stroke="#E85D3A"
+                stroke-width="2"
+                stroke-linejoin="round"
+                style="transition: all 0.8s ease;"
+              />
+              <!-- Data dots -->
+              <circle cx="0" cy="-91" r="4" fill="#E85D3A"/>
+              <circle cx="86.56" cy="-28.13" r="4" fill="#E85D3A"/>
+              <circle cx="61.14" cy="84.15" r="4" fill="#E85D3A"/>
+              <circle cx="-53.5" cy="73.63" r="4" fill="#E85D3A"/>
+              <circle cx="-74.2" cy="-24.11" r="4" fill="#E85D3A"/>
+              <!-- Labels -->
+              <text x="0" y="-140" text-anchor="middle" fill="#52525B" font-size="12" font-weight="500">🌟 分享</text>
+              <text x="136" y="-38" text-anchor="start" fill="#52525B" font-size="12" font-weight="500">🤝 协作</text>
+              <text x="88" y="118" text-anchor="middle" fill="#52525B" font-size="12" font-weight="500">📡 传播</text>
+              <text x="-88" y="118" text-anchor="middle" fill="#52525B" font-size="12" font-weight="500">🧠 思考</text>
+              <text x="-136" y="-38" text-anchor="end" fill="#52525B" font-size="12" font-weight="500">🏃 陪跑</text>
+            </g>
+          </svg>
+          <div class="radar-legend">
+            <span class="radar-legend-item"><span class="legend-dot"></span>示例数据</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust-dims">
+        <div class="trust-dim reveal">
+          <div class="trust-dim-icon">🌟</div>
+          <div class="trust-dim-body">
+            <div class="trust-dim-name">分享互信值</div>
+            <div class="trust-dim-desc">Talk 分享、写文章、开源工具。你把经验公开，别人因此受益，这就是分享互信值。</div>
+          </div>
+        </div>
+        <div class="trust-dim reveal">
+          <div class="trust-dim-icon">🤝</div>
+          <div class="trust-dim-body">
+            <div class="trust-dim-name">协作互信值</div>
+            <div class="trust-dim-desc">项目共建、任务交付。一起做事，按时靠谱地完成，信任就是这样积累的。</div>
+          </div>
+        </div>
+        <div class="trust-dim reveal">
+          <div class="trust-dim-icon">📡</div>
+          <div class="trust-dim-body">
+            <div class="trust-dim-name">传播互信值</div>
+            <div class="trust-dim-desc">转发内容、引荐新成员。帮社群扩大影响力，每一次真诚推荐都有记录。</div>
+          </div>
+        </div>
+        <div class="trust-dim reveal">
+          <div class="trust-dim-icon">🧠</div>
+          <div class="trust-dim-body">
+            <div class="trust-dim-name">思考互信值</div>
+            <div class="trust-dim-desc">深度反思、复盘思考过程。不只做事，还能把做事的过程变成集体智慧。</div>
+          </div>
+        </div>
+        <div class="trust-dim reveal">
+          <div class="trust-dim-icon">🏃</div>
+          <div class="trust-dim-body">
+            <div class="trust-dim-name">陪跑互信值</div>
+            <div class="trust-dim-desc">持续跟进、咨询辅导。愿意花时间陪别人走一段路，这是最稀缺的互信值。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flowers & Exchange -->
+<section id="flowers">
+  <div class="container">
+    <span class="section-tag reveal">小红花 & 兑换</span>
+    <h2 class="section-heading reveal">你的贡献，看得见也用得上</h2>
+    <p class="section-sub reveal">成员互相送小红花，表示「你的分享/协作/思考对我有价值」。双向的、可见的、有用的。</p>
+
+    <div class="flowers-layout">
+      <div class="card-block reveal">
+        <div class="card-block-icon">🌸</div>
+        <h3>小红花机制</h3>
+        <p>小红花是成员之间最直接的认可方式。你觉得谁的分享对你有用，就送 ta 一朵。简单粗暴，真实有效。</p>
+        <ul class="flower-list">
+          <li>Talk 分享后，听众觉得有收获就送花</li>
+          <li>项目协作中，队友靠谱就互相送花</li>
+          <li>写了好文章、做了好工具，社群成员主动送花</li>
+          <li>引荐了合适的新成员，也能获得小红花</li>
+        </ul>
+      </div>
+
+      <div class="card-block reveal">
+        <div class="card-block-icon">🔄</div>
+        <h3>小红花兑换</h3>
+        <p>攒够了小红花可以兑换实打实的权益。</p>
+        <div class="exchange-grid">
+          <div class="exchange-item">
+            <span class="exchange-name">付费课程折扣</span>
+            <span class="exchange-cost">10~50 🌸</span>
+          </div>
+          <div class="exchange-item">
+            <span class="exchange-name">项目优先参与权</span>
+            <span class="exchange-cost">20 🌸</span>
+          </div>
+          <div class="exchange-item">
+            <span class="exchange-name">闭门会席位</span>
+            <span class="exchange-cost">30 🌸</span>
+          </div>
+          <div class="exchange-item">
+            <span class="exchange-name">公共价值池分红</span>
+            <span class="exchange-cost">自动 ✨</span>
+          </div>
+          <div class="exchange-item">
+            <span class="exchange-name">codesome Token</span>
+            <span class="exchange-cost">5🌸 = 1</span>
+          </div>
+          <div class="exchange-item">
+            <span class="exchange-name">品牌曝光机会</span>
+            <span class="exchange-cost">50 🌸</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Value Pool -->
+    <div class="value-pool reveal">
+      <h3>🏦 公共价值池</h3>
+      <p>社群收入按比例注入公共价值池，按互信值分配给每个贡献者。全流程公开透明。</p>
+      <div class="pool-bars">
+        <div class="pool-bar">
+          <div class="pool-bar-value">25%</div>
+          <div class="pool-bar-label">付费课程收入</div>
+        </div>
+        <div class="pool-bar">
+          <div class="pool-bar-value">25%</div>
+          <div class="pool-bar-label">共建项目收入</div>
+        </div>
+        <div class="pool-bar">
+          <div class="pool-bar-value">10%</div>
+          <div class="pool-bar-label">会员费</div>
+        </div>
+        <div class="pool-bar">
+          <div class="pool-bar-value">+</div>
+          <div class="pool-bar-label">企业赞助 Token</div>
+        </div>
+        <div class="pool-bar">
+          <div class="pool-bar-value">+</div>
+          <div class="pool-bar-label">大模型公司资金</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- What We Do -->
+<section id="whatwedo">
+  <div class="container">
+    <span class="section-tag reveal">我们在做什么</span>
+    <h2 class="section-heading reveal">两条线，一个目标：增长</h2>
+    <p class="section-sub reveal">GrowthCore 聚集有自己产品、面向海外、All in AI 的行动派。两条业务线，覆盖从技术到增长的完整链路。</p>
+
+    <div class="whatwedo-grid">
+      <div class="whatwedo-card reveal">
+        <div class="whatwedo-card-head">
+          <span class="whatwedo-icon">🦞</span>
+          <span class="whatwedo-tag">Vibecoding 小龙虾</span>
+        </div>
+        <h3>超级星期四线上 Talk</h3>
+        <p>每期 3~4 位实践者分享。真实项目、真实踩坑、真实数据。没有 PPT 念稿，只有一线经验。</p>
+      </div>
+
+      <div class="whatwedo-card reveal">
+        <div class="whatwedo-card-head">
+          <span class="whatwedo-icon">🌊</span>
+          <span class="whatwedo-tag">Vibecoding 小龙虾</span>
+        </div>
+        <h3>虾塘造浪共创计划</h3>
+        <p>组队做项目。从 idea 到 MVP 到增长，社群里找搭档，互信值机制保证协作质量。</p>
+      </div>
+
+      <div class="whatwedo-card reveal">
+        <div class="whatwedo-card-head">
+          <span class="whatwedo-icon">📡</span>
+          <span class="whatwedo-tag">AI 增长</span>
+        </div>
+        <h3>AI 增长围观群 + GrowthOS</h3>
+        <p>每月一个主题，一周5天内容。增长策略拆解 + GrowthOS 知识库沉淀。单月 199 元。</p>
+      </div>
+
+      <div class="whatwedo-card reveal">
+        <div class="whatwedo-card-head">
+          <span class="whatwedo-icon">🎙️</span>
+          <span class="whatwedo-tag">内容产品</span>
+        </div>
+        <h3>AI 个体编年史（播客）</h3>
+        <p>记录 AI 时代个体创业者的真实故事。9.9 主题专场、AI 学习课同步推进中。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rules -->
+<section id="rules">
+  <div class="container">
+    <span class="section-tag reveal">养成规则</span>
+    <h2 class="section-heading reveal">怎么玩这个游戏</h2>
+    <p class="section-sub reveal">选完角色只是开始。通过参与社群活动获得小红花，积累互信值，慢慢建造属于你自己的「房屋」。</p>
+
+    <div class="rules-steps">
+      <div class="rule-step reveal">
+        <div class="rule-num">1</div>
+        <div class="rule-body">
+          <h4>选择你的角色</h4>
+          <p>五种角色，选一个最像你的。角色决定你的起始能力和成长方向，想做什么就做什么。</p>
+        </div>
+      </div>
+      <div class="rule-step reveal">
+        <div class="rule-num">2</div>
+        <div class="rule-body">
+          <h4>参与，获得小红花</h4>
+          <p>Talk 分享、写文章、做项目、引荐成员、深度复盘……每一种贡献都能获得其他成员送出的小红花。</p>
+        </div>
+      </div>
+      <div class="rule-step reveal">
+        <div class="rule-num">3</div>
+        <div class="rule-body">
+          <h4>积累互信值</h4>
+          <p>小红花转化为五个维度的互信值。分享、协作、传播、思考、陪跑，你的雷达图会随着行动慢慢变大。</p>
+        </div>
+      </div>
+      <div class="rule-step reveal">
+        <div class="rule-num">4</div>
+        <div class="rule-body">
+          <h4>兑换权益，建造房屋</h4>
+          <p>小红花可以兑换课程、席位、Token。互信值越高，分红越多。你的「房屋」就是你在社群里建起来的信任和资源网络。</p>
+        </div>
+      </div>
+      <div class="rule-step reveal">
+        <div class="rule-num">5</div>
+        <div class="rule-body">
+          <h4>升级，解锁新身份</h4>
+          <p>持续贡献，从新手变成核心贡献者，甚至成为某个方向的领航人。角色可以进化，能力可以跨界。</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="growth-paths-title reveal">不同角色的成长路径</h3>
+
+    <div class="growth-paths">
+      <div class="path-card reveal" data-role="builder">
+        <div class="path-emoji">🔧</div>
+        <div class="path-name">构建者</div>
+        <div class="path-levels">
+          <div class="path-level">Lv1 独立开发者</div>
+          <div class="path-level">Lv2 开源贡献者</div>
+          <div class="path-level">Lv3 技术领航人</div>
+        </div>
+      </div>
+      <div class="path-card reveal" data-role="strategist">
+        <div class="path-emoji">📐</div>
+        <div class="path-name">策略者</div>
+        <div class="path-levels">
+          <div class="path-level">Lv1 增长观察者</div>
+          <div class="path-level">Lv2 策略顾问</div>
+          <div class="path-level">Lv3 增长领航人</div>
+        </div>
+      </div>
+      <div class="path-card reveal" data-role="creator">
+        <div class="path-emoji">🎨</div>
+        <div class="path-name">创作者</div>
+        <div class="path-levels">
+          <div class="path-level">Lv1 内容新手</div>
+          <div class="path-level">Lv2 传播达人</div>
+          <div class="path-level">Lv3 品牌领航人</div>
+        </div>
+      </div>
+      <div class="path-card reveal" data-role="explorer">
+        <div class="path-emoji">🔭</div>
+        <div class="path-name">探索者</div>
+        <div class="path-levels">
+          <div class="path-level">Lv1 行业新探</div>
+          <div class="path-level">Lv2 跨界连接者</div>
+          <div class="path-level">Lv3 场景领航人</div>
+        </div>
+      </div>
+      <div class="path-card reveal" data-role="learner">
+        <div class="path-emoji">🌱</div>
+        <div class="path-name">学习者</div>
+        <div class="path-levels">
+          <div class="path-level">Lv1 AI 新手</div>
+          <div class="path-level">Lv2 实践者</div>
+          <div class="path-level">Lv3 转型成功</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Join -->
+<section id="join">
+  <div class="join-bg-grid"></div>
+  <div class="join-glow"></div>
+  <div class="container join-content">
+    <span class="section-tag reveal">加入我们</span>
+    <h2 class="join-title reveal">准备好开始了吗？</h2>
+    <p class="join-desc reveal">你带着你的经验和项目来，我们提供机制和同路人。剩下的，一起建。</p>
+    <div class="join-buttons reveal">
+      <a href="#" class="join-btn-primary" id="joinCta">🦞 加入 GrowthCore</a>
+      <a href="#" class="join-btn-ghost">了解更多 →</a>
+    </div>
+    <div class="join-contacts reveal">
+      <span class="join-contact">微信 <span>growthcore</span></span>
+      <span class="join-contact">邮箱 <span>hi@growthcore.com</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- Social Connect -->
+<section id="social-connect">
+  <div class="container">
+    <span class="section-tag reveal">找到我们</span>
+    <h2 class="section-heading reveal" style="color: var(--ink-on-dark);">加入社群，和同路人连接</h2>
+
+    <div class="social-grid">
+      <div class="social-card reveal">
+        <div class="social-card-icon">🦞</div>
+        <div class="social-card-title">OpenClaw 虾友深度交流群</div>
+        <div class="social-card-desc">微信群 · 日常交流、资源互通、项目碰撞</div>
+        <div class="social-card-qr">
+          <img src="assets/qr-wechat.jpg" alt="微信群二维码" onerror="this.parentElement.innerHTML='<div style=&quot;display:flex;align-items:center;justify-content:center;height:100%;color:#A1A1AA;font-size:13px;&quot;>二维码加载中</div>'">
+        </div>
+      </div>
+
+      <div class="social-card reveal">
+        <div class="social-card-icon">📘</div>
+        <div class="social-card-title">飞书 Chris崔莹</div>
+        <div class="social-card-desc">飞书 · 深度沟通、项目协作、1v1 交流</div>
+        <div class="social-card-qr">
+          <img src="assets/qr-feishu.png" alt="飞书二维码" onerror="this.parentElement.innerHTML='<div style=&quot;display:flex;align-items:center;justify-content:center;height:100%;color:#A1A1AA;font-size:13px;&quot;>二维码加载中</div>'">
+        </div>
+      </div>
+
+      <div class="social-card reveal">
+        <div class="social-card-icon">⚡</div>
+        <div class="social-card-title">即刻</div>
+        <div class="social-card-desc">即刻 · 关注动态、获取最新社群信息</div>
+        <a href="https://okjk.co/83n25s" target="_blank" rel="noopener" class="social-card-link">
+          关注即刻 →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Survey Modal -->
+<div class="survey-overlay" id="surveyOverlay">
+  <div class="survey-modal" id="surveyModal">
+    <div class="survey-modal-header">
+      <button class="survey-modal-close" id="surveyClose" aria-label="关闭">✕</button>
+      <div class="survey-modal-title" id="surveyTitle">🦞 欢迎加入 GrowthCore</div>
+      <p class="survey-modal-subtitle" id="surveySubtitle">花 2 分钟填个小问卷，帮我们更好地连接你和社群里的同路人。</p>
+    </div>
+
+    <!-- Form -->
+    <div class="survey-modal-body" id="surveyFormWrap">
+      <form id="surveyForm" onsubmit="submitSurvey(event)">
+
+        <div class="survey-section-label">基本信息</div>
+
+        <div class="survey-field">
+          <label>昵称 *</label>
+          <input type="text" name="nickname" placeholder="你希望在社群里被怎么称呼" required>
+        </div>
+
+        <div class="survey-field">
+          <label>微信号 *</label>
+          <input type="text" name="wechat" placeholder="方便拉群和后续沟通" required>
+        </div>
+
+        <div class="survey-field">
+          <label>你目前的职业/身份</label>
+          <input type="text" name="occupation" placeholder="如：独立开发者、产品经理、学生……">
+        </div>
+
+        <div class="survey-field">
+          <label>你能提供什么资源？</label>
+          <div class="survey-checkboxes">
+            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="技术开发"><span>技术开发</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="产品设计"><span>产品设计</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="内容创作"><span>内容创作</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="增长运营"><span>增长运营</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="商业策略"><span>商业策略</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="行业人脉"><span>行业人脉</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="数据分析"><span>数据分析</span></label>
+          </div>
+          <input type="text" name="canProvideOther" placeholder="其他（自填）" style="margin-top:8px;">
+        </div>
+
+        <div class="survey-field">
+          <label>你需要什么资源？</label>
+          <div class="survey-checkboxes">
+            <label class="survey-check-item"><input type="checkbox" name="needResource" value="技术合伙人"><span>技术合伙人</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="needResource" value="设计支持"><span>设计支持</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="needResource" value="增长运营经验"><span>增长/运营经验</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="needResource" value="商业化建议"><span>商业化建议</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="needResource" value="行业资源"><span>行业资源</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="needResource" value="AI工具指导"><span>AI 工具指导</span></label>
+            <label class="survey-check-item"><input type="checkbox" name="needResource" value="项目协作伙伴"><span>项目协作伙伴</span></label>
+          </div>
+          <input type="text" name="needResourceOther" placeholder="其他（自填）" style="margin-top:8px;">
+        </div>
+
+        <!-- 分享 branch -->
+        <div class="survey-branch" id="surveyBranchShare">
+          <div class="survey-section-label">分享方向</div>
+
+          <div class="survey-field">
+            <label>你想分享什么课程/话题？</label>
+            <input type="text" name="shareTopic" placeholder="如：用 Cursor 从零搭建 SaaS">
+          </div>
+
+          <div class="survey-field">
+            <label>课程简介（一两句话）</label>
+            <textarea name="shareIntro" placeholder="简单描述你会讲什么、听众能收获什么"></textarea>
+          </div>
+
+          <div class="survey-field">
+            <label>你方便分享的时间段？</label>
+            <div class="survey-checkboxes">
+              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="工作日晚上"><span>工作日晚上</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="周末上午"><span>周末上午</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="周末下午"><span>周末下午</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="灵活"><span>灵活</span></label>
+            </div>
+          </div>
+
+          <div class="survey-field">
+            <label>分享形式偏好？</label>
+            <div class="survey-checkboxes">
+              <label class="survey-check-item"><input type="radio" name="shareFormat" value="线上直播"><span>线上直播</span></label>
+              <label class="survey-check-item"><input type="radio" name="shareFormat" value="录播"><span>录播</span></label>
+              <label class="survey-check-item"><input type="radio" name="shareFormat" value="线下"><span>线下</span></label>
+              <label class="survey-check-item"><input type="radio" name="shareFormat" value="都行"><span>都行</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 项目 branch -->
+        <div class="survey-branch" id="surveyBranchProject">
+          <div class="survey-section-label">项目方向</div>
+
+          <div class="survey-field">
+            <label>项目名称</label>
+            <input type="text" name="projectName" placeholder="如果还没名字，写个代号也行">
+          </div>
+
+          <div class="survey-field">
+            <label>一句话描述你的项目</label>
+            <input type="text" name="projectDesc" placeholder="如：用 AI 帮跨境卖家自动生成 listing 文案">
+          </div>
+
+          <div class="survey-field">
+            <label>项目目前在什么阶段？</label>
+            <div class="survey-checkboxes">
+              <label class="survey-check-item"><input type="radio" name="projectStage" value="想法阶段"><span>💡 想法阶段</span></label>
+              <label class="survey-check-item"><input type="radio" name="projectStage" value="已启动"><span>🚀 已启动</span></label>
+              <label class="survey-check-item"><input type="radio" name="projectStage" value="已有产品"><span>📦 已有产品</span></label>
+              <label class="survey-check-item"><input type="radio" name="projectStage" value="已有收入"><span>💰 已有收入</span></label>
+            </div>
+          </div>
+
+          <div class="survey-field">
+            <label>你最需要什么类型的人？</label>
+            <div class="survey-checkboxes">
+              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="技术"><span>技术</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="设计"><span>设计</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="运营"><span>运营</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="市场"><span>市场</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="投资"><span>投资</span></label>
+              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="都需要"><span>都需要</span></label>
+            </div>
+          </div>
+
+          <div class="survey-field">
+            <label>你能为合作者提供什么？</label>
+            <textarea name="canOffer" placeholder="如：技术股份、收入分成、行业资源……"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="survey-btn-submit">提交问卷 🦞</button>
+        <button type="button" class="survey-btn-skip" onclick="closeSurvey()">先跳过，之后再填</button>
+      </form>
+    </div>
+
+    <!-- Thanks state -->
+    <div class="survey-thanks" id="surveyThanks">
+      <div class="survey-thanks-icon">🎉</div>
+      <div class="survey-thanks-title">提交成功！</div>
+      <div class="survey-thanks-desc">感谢你花时间填写问卷。<br>我们会尽快通过微信联系你，把你拉入社群频道。<br>互信值之旅，正式开始 🦞</div>
+      <button class="survey-thanks-close" onclick="closeSurvey()">好的，关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>© 2025 GrowthCore. Built with 🦞 by the community.</p>
+  </div>
+</footer>
+
+<script>
+// ========== Mobile Nav ==========
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  document.getElementById('navbar').classList.toggle('mobile-open');
+  this.textContent = this.textContent === '☰' ? '✕' : '☰';
+});
+
+document.querySelectorAll('.nav-links a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    document.getElementById('navbar').classList.remove('mobile-open');
+    document.getElementById('mobileToggle').textContent = '☰';
+  });
+});
+
+// ========== Role Selection ==========
+var roleMap = {
+  builder: '构建者 Builder',
+  strategist: '策略者 Strategist',
+  creator: '创作者 Creator',
+  explorer: '探索者 Explorer',
+  learner: '学习者 Learner'
+};
+
+var selectedRoleName = '';
+
+function selectRole(card) {
+  var cards = document.querySelectorAll('.role-card');
+  var wasSelected = card.classList.contains('selected');
+
+  cards.forEach(function(c) { c.classList.remove('selected'); });
+
+  if (!wasSelected) {
+    card.classList.add('selected');
+    var role = card.getAttribute('data-role');
+    selectedRoleName = roleMap[role];
+    document.getElementById('toastRoleName').textContent = selectedRoleName;
+    var toast = document.getElementById('roleToast');
+    toast.classList.remove('visible');
+    // Force reflow for re-animation
+    void toast.offsetWidth;
+    toast.classList.add('visible');
+    burstFlowers(card);
+    // Open survey modal after flower animation
+    setTimeout(function() {
+      openSurvey(selectedRoleName);
+    }, 800);
+  } else {
+    document.getElementById('roleToast').classList.remove('visible');
+  }
+}
+
+// ========== Flower Burst ==========
+function burstFlowers(el) {
+  var rect = el.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top + rect.height / 2;
+  var emojis = ['🌸', '✨', '🌺', '💮'];
+
+  for (var i = 0; i < 10; i++) {
+    var f = document.createElement('div');
+    f.className = 'falling-flower';
+    f.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    f.style.left = (cx + (Math.random() - 0.5) * 180) + 'px';
+    f.style.top = (cy - 20) + 'px';
+    f.style.fontSize = (Math.random() * 14 + 12) + 'px';
+    f.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    f.style.animationDelay = (Math.random() * 0.4) + 's';
+    document.body.appendChild(f);
+    setTimeout(function(el) { el.remove(); }.bind(null, f), 4000);
+  }
+}
+
+// ========== CTA Flowers ==========
+function triggerFlowers(e) {
+  e.preventDefault();
+  var rect = e.target.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top;
+  var emojis = ['🌸', '🌺', '✨', '💮', '🦞'];
+
+  for (var i = 0; i < 16; i++) {
+    var f = document.createElement('div');
+    f.className = 'falling-flower';
+    f.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    f.style.left = (cx + (Math.random() - 0.5) * 280) + 'px';
+    f.style.top = (cy - 30) + 'px';
+    f.style.fontSize = (Math.random() * 14 + 14) + 'px';
+    f.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+    f.style.animationDelay = (Math.random() * 0.6) + 's';
+    document.body.appendChild(f);
+    setTimeout(function(el) { el.remove(); }.bind(null, f), 5000);
+  }
+}
+
+// ========== Scroll Reveal ==========
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+document.querySelectorAll('.reveal').forEach(function(el) {
+  revealObserver.observe(el);
+});
+
+// ========== Radar Animation ==========
+var radarDone = false;
+var radarObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting && !radarDone) {
+      radarDone = true;
+      var poly = document.getElementById('radarPoly');
+      if (poly) {
+        poly.setAttribute('points', '0,0 0,0 0,0 0,0 0,0');
+        setTimeout(function() {
+          poly.setAttribute('points', '0,-91 86.56,-28.13 61.14,84.15 -53.5,73.63 -74.2,-24.11');
+        }, 100);
+      }
+    }
+  });
+}, { threshold: 0.3 });
+
+var trustEl = document.getElementById('trust');
+if (trustEl) radarObserver.observe(trustEl);
+
+// ========== Smooth nav background ==========
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('navbar');
+  if (window.scrollY > 20) {
+    nav.style.boxShadow = '0 1px 8px rgba(0,0,0,0.06)';
+  } else {
+    nav.style.boxShadow = 'none';
+  }
+}, { passive: true });
+
+// ========== Survey Modal ==========
+function openSurvey(roleName) {
+  var overlay = document.getElementById('surveyOverlay');
+  var title = document.getElementById('surveyTitle');
+  var subtitle = document.getElementById('surveySubtitle');
+  var formWrap = document.getElementById('surveyFormWrap');
+  var thanks = document.getElementById('surveyThanks');
+  var form = document.getElementById('surveyForm');
+
+  // Reset state
+  formWrap.style.display = '';
+  thanks.classList.remove('active');
+  form.reset();
+
+  // Reset branches
+  document.getElementById('surveyBranchShare').classList.remove('active');
+  document.getElementById('surveyBranchProject').classList.remove('active');
+
+  // Determine branch based on role name
+  var isShareRole = /创作者|策略者/.test(roleName);
+  var isProjectRole = /构建者|探索者/.test(roleName);
+
+  if (isShareRole) {
+    document.getElementById('surveyBranchShare').classList.add('active');
+    subtitle.textContent = '你选了' + roleName.split(' ')[0] + '，看起来你有东西想和大家分享！多填几个问题，帮我们更好地安排。';
+  } else if (isProjectRole) {
+    document.getElementById('surveyBranchProject').classList.add('active');
+    subtitle.textContent = '你选了' + roleName.split(' ')[0] + '，听起来你有项目想搞！多填几个问题，帮我们给你找搭档。';
+  } else {
+    subtitle.textContent = '花 2 分钟填个小问卷，帮我们更好地连接你和社群里的同路人。';
+  }
+
+  title.textContent = '🦞 欢迎，' + roleName.split(' ')[0] + '！';
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSurvey() {
+  var overlay = document.getElementById('surveyOverlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close on overlay click (not modal)
+document.getElementById('surveyOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeSurvey();
+});
+
+// Close button
+document.getElementById('surveyClose').addEventListener('click', closeSurvey);
+
+// ESC key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSurvey();
+});
+
+function submitSurvey(e) {
+  e.preventDefault();
+  var form = e.target;
+  var data = {};
+
+  // Collect text/textarea inputs
+  var inputs = form.querySelectorAll('input[type="text"], textarea, select');
+  inputs.forEach(function(el) {
+    if (el.name && el.value.trim()) {
+      data[el.name] = el.value.trim();
+    }
+  });
+
+  // Collect checkboxes
+  var checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+  checkboxes.forEach(function(el) {
+    if (!data[el.name]) data[el.name] = [];
+    data[el.name].push(el.value);
+  });
+
+  // Collect radios
+  var radios = form.querySelectorAll('input[type="radio"]:checked');
+  radios.forEach(function(el) {
+    data[el.name] = el.value;
+  });
+
+  // Add role and timestamp
+  data.role = selectedRoleName;
+  data.timestamp = new Date().toISOString();
+
+  // Save to localStorage
+  var existing = [];
+  try {
+    existing = JSON.parse(localStorage.getItem('growthcore_surveys') || '[]');
+  } catch(err) {}
+  existing.push(data);
+  localStorage.setItem('growthcore_surveys', JSON.stringify(existing));
+
+  // Show thanks
+  document.getElementById('surveyFormWrap').style.display = 'none';
+  document.getElementById('surveyThanks').classList.add('active');
+}
+
+// Also allow opening survey from join button
+document.getElementById('joinCta').addEventListener('click', function(e) {
+  e.preventDefault();
+  triggerFlowers(e);
+  setTimeout(function() {
+    openSurvey(selectedRoleName || '新朋友');
+  }, 600);
+});
+</script>
+
+</body>
+</html>
