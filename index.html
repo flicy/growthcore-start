@@ -1637,6 +1637,31 @@ footer p {
   box-shadow: 0 8px 24px rgba(232, 93, 58, 0.2);
 }
 
+/* City search dropdown */
+.city-search-wrap { position: relative; width: 100%; }
+.city-search-input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--ink-faint); border-radius: var(--radius-xs); font-size: 15px; background: var(--bg-card); color: var(--ink); font-family: inherit; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+.city-search-input:focus { border-color: var(--accent); }
+.city-dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: 220px; overflow-y: auto; background: var(--bg-card); border: 1.5px solid var(--ink-faint); border-radius: var(--radius-xs); z-index: 10; margin-top: 4px; box-shadow: var(--shadow-md); }
+.city-dropdown.show { display: block; }
+.city-dropdown-item { padding: 8px 16px; cursor: pointer; font-size: 14px; transition: background 0.15s; }
+.city-dropdown-item:hover, .city-dropdown-item.selected { background: var(--accent-soft); color: var(--accent); }
+.city-dropdown-item.no-match { color: var(--ink-tertiary); cursor: default; pointer-events: none; }
+
+/* Enum select */
+.enum-select { width: 100%; padding: 12px 16px; border: 1.5px solid var(--ink-faint); border-radius: var(--radius-xs); font-size: 15px; background: var(--bg-card); color: var(--ink); font-family: inherit; outline: none; cursor: pointer; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23A1A1AA' stroke-width='1.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; box-sizing: border-box; }
+.enum-select:focus { border-color: var(--accent); }
+
+/* Multi-select tags */
+.multi-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.multi-tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1.5px solid var(--ink-faint); border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; user-select: none; white-space: nowrap; }
+.multi-tag:hover { border-color: var(--accent); background: var(--accent-soft); }
+.multi-tag.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.multi-custom { flex: 1; min-width: 120px; border: none; outline: none; font-size: 13px; padding: 6px 8px; font-family: inherit; }
+
+/* Role field sets */
+.role-fields { display: none; margin-top: 8px; }
+.role-fields.active { display: block; }
+
 /* ========== Social Connect Section ========== */
 #social-connect {
   background: var(--bg-dark);
@@ -2446,7 +2471,6 @@ footer p {
       <p class="survey-modal-subtitle" id="surveySubtitle">花 2 分钟填个小问卷，帮我们更好地连接你和社群里的同路人。</p>
     </div>
 
-    <!-- Form -->
     <div class="survey-modal-body" id="surveyFormWrap">
       <form id="surveyForm" onsubmit="submitSurvey(event)">
 
@@ -2454,7 +2478,7 @@ footer p {
 
         <div class="survey-field">
           <label>昵称 *</label>
-          <input type="text" name="nickname" placeholder="你希望在社群里被怎么称呼" required>
+          <input type="text" name="name" placeholder="你希望在社群里被怎么称呼" required>
         </div>
 
         <div class="survey-field">
@@ -2463,121 +2487,173 @@ footer p {
         </div>
 
         <div class="survey-field">
-          <label>你目前的职业/身份</label>
-          <input type="text" name="occupation" placeholder="如：独立开发者、产品经理、学生……">
+          <label>所在城市 *</label>
+          <div class="city-search-wrap" id="citySearchWrap">
+            <input type="text" class="city-search-input" id="citySearchInput" name="city" placeholder="输入城市名搜索…" autocomplete="off" required>
+            <div class="city-dropdown" id="cityDropdown"></div>
+          </div>
         </div>
 
         <div class="survey-field">
-          <label>你能提供什么资源？</label>
-          <div class="survey-checkboxes">
-            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="技术开发"><span>技术开发</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="产品设计"><span>产品设计</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="内容创作"><span>内容创作</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="增长运营"><span>增长运营</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="商业策略"><span>商业策略</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="行业人脉"><span>行业人脉</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="canProvide" value="数据分析"><span>数据分析</span></label>
-          </div>
-          <input type="text" name="canProvideOther" placeholder="其他（自填）" style="margin-top:8px;">
+          <label>当前职业/身份 *</label>
+          <select class="enum-select" name="occupation" required>
+            <option value="" disabled selected>请选择</option>
+            <option value="产品经理">产品经理</option>
+            <option value="软件工程师/开发者">软件工程师/开发者</option>
+            <option value="设计师">设计师</option>
+            <option value="创业者/创始人">创业者/创始人</option>
+            <option value="运营/市场/增长">运营/市场/增长</option>
+            <option value="内容创作者/自媒体">内容创作者/自媒体</option>
+            <option value="数据分析师/科学家">数据分析师/科学家</option>
+            <option value="AI/ML 工程师">AI/ML 工程师</option>
+            <option value="学生">学生</option>
+            <option value="自由职业者">自由职业者</option>
+            <option value="咨询/投资">咨询/投资</option>
+            <option value="传统行业从业者">传统行业从业者</option>
+            <option value="教育/研究">教育/研究</option>
+            <option value="其他">其他</option>
+          </select>
         </div>
 
         <div class="survey-field">
-          <label>你需要什么资源？</label>
-          <div class="survey-checkboxes">
-            <label class="survey-check-item"><input type="checkbox" name="needResource" value="技术合伙人"><span>技术合伙人</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="needResource" value="设计支持"><span>设计支持</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="needResource" value="增长运营经验"><span>增长/运营经验</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="needResource" value="商业化建议"><span>商业化建议</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="needResource" value="行业资源"><span>行业资源</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="needResource" value="AI工具指导"><span>AI 工具指导</span></label>
-            <label class="survey-check-item"><input type="checkbox" name="needResource" value="项目协作伙伴"><span>项目协作伙伴</span></label>
-          </div>
-          <input type="text" name="needResourceOther" placeholder="其他（自填）" style="margin-top:8px;">
+          <label>AI 使用频率 *</label>
+          <select class="enum-select" name="aiFrequency" required>
+            <option value="" disabled selected>请选择</option>
+            <option value="每天">每天</option>
+            <option value="每周几次">每周几次</option>
+            <option value="偶尔">偶尔</option>
+            <option value="刚开始">刚开始</option>
+          </select>
         </div>
 
-        <!-- 分享 branch -->
-        <div class="survey-branch" id="surveyBranchShare">
-          <div class="survey-section-label">分享方向</div>
-
-          <div class="survey-field">
-            <label>你想分享什么课程/话题？</label>
-            <input type="text" name="shareTopic" placeholder="如：用 Cursor 从零搭建 SaaS">
+        <div class="survey-field">
+          <label>你用过哪些 AI 工具？（多选）</label>
+          <div class="multi-tags" id="aiToolsTags">
+            <span class="multi-tag" data-value="ChatGPT">ChatGPT</span>
+            <span class="multi-tag" data-value="Claude">Claude</span>
+            <span class="multi-tag" data-value="Gemini">Gemini</span>
+            <span class="multi-tag" data-value="DeepSeek">DeepSeek</span>
+            <span class="multi-tag" data-value="豆包">豆包</span>
+            <span class="multi-tag" data-value="Kimi">Kimi</span>
+            <span class="multi-tag" data-value="通义千问">通义千问</span>
+            <span class="multi-tag" data-value="文心一言">文心一言</span>
+            <span class="multi-tag" data-value="Cursor">Cursor</span>
+            <span class="multi-tag" data-value="GitHub Copilot">GitHub Copilot</span>
+            <span class="multi-tag" data-value="Windsurf">Windsurf</span>
+            <span class="multi-tag" data-value="Bolt">Bolt</span>
+            <span class="multi-tag" data-value="v0">v0</span>
+            <span class="multi-tag" data-value="Midjourney">Midjourney</span>
+            <span class="multi-tag" data-value="DALL·E">DALL·E</span>
+            <span class="multi-tag" data-value="Suno">Suno</span>
+            <span class="multi-tag" data-value="Notion AI">Notion AI</span>
+            <span class="multi-tag" data-value="Coze">Coze</span>
+            <span class="multi-tag" data-value="Dify">Dify</span>
+            <span class="multi-tag" data-value="Cola">Cola</span>
           </div>
+          <input type="text" class="multi-custom" id="aiToolsCustom" name="aiToolsCustom" placeholder="其他工具（自填，回车添加）" style="margin-top:8px;">
+          <input type="hidden" name="aiTools" id="aiToolsHidden">
+        </div>
 
-          <div class="survey-field">
-            <label>课程简介（一两句话）</label>
-            <textarea name="shareIntro" placeholder="简单描述你会讲什么、听众能收获什么"></textarea>
+        <div class="survey-field">
+          <label>从哪里知道 GrowthCore？（多选）</label>
+          <div class="multi-tags" id="sourceTags">
+            <span class="multi-tag" data-value="小红书">小红书</span>
+            <span class="multi-tag" data-value="即刻">即刻</span>
+            <span class="multi-tag" data-value="朋友圈">朋友圈</span>
+            <span class="multi-tag" data-value="朋友推荐">朋友推荐</span>
+            <span class="multi-tag" data-value="OpenClaw社群">OpenClaw 社群</span>
+            <span class="multi-tag" data-value="GitHub">GitHub</span>
           </div>
+          <input type="text" class="multi-custom" id="sourceCustom" name="sourceCustom" placeholder="其他渠道（自填）" style="margin-top:8px;">
+          <input type="hidden" name="source" id="sourceHidden">
+        </div>
 
-          <div class="survey-field">
-            <label>你方便分享的时间段？</label>
-            <div class="survey-checkboxes">
-              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="工作日晚上"><span>工作日晚上</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="周末上午"><span>周末上午</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="周末下午"><span>周末下午</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="shareTime" value="灵活"><span>灵活</span></label>
+        <!-- Role-specific fields -->
+        <div class="role-fields" id="roleBuilder">
+          <div class="survey-section-label">🔧 构建者专属</div>
+          <div class="survey-field"><label>技术栈（多选）</label>
+            <div class="multi-tags" data-multi="builderTech">
+              <span class="multi-tag" data-value="前端">前端</span><span class="multi-tag" data-value="后端">后端</span><span class="multi-tag" data-value="AI Agent">AI Agent</span><span class="multi-tag" data-value="全栈">全栈</span><span class="multi-tag" data-value="移动端">移动端</span>
             </div>
+            <input type="hidden" name="builderTech" data-hidden>
           </div>
+          <div class="survey-field"><label>做过的最满意的一个产品</label><input type="text" name="builderProduct" placeholder="一句话描述，有链接更好"></div>
+          <div class="survey-field"><label>用 AI 写代码的频率</label>
+            <select class="enum-select" name="builderAICode"><option value="" disabled selected>请选择</option><option value="主力工具">主力工具</option><option value="辅助工具">辅助工具</option><option value="偶尔用">偶尔用</option><option value="还没怎么用">还没怎么用</option></select>
+          </div>
+          <div class="survey-field"><label>目前在做的项目（可选）</label><input type="text" name="builderProject" placeholder="一句话描述"></div>
+          <div class="survey-field"><label>GitHub / 个人主页（可选）</label><input type="text" name="builderLink" placeholder="链接"></div>
+        </div>
 
-          <div class="survey-field">
-            <label>分享形式偏好？</label>
-            <div class="survey-checkboxes">
-              <label class="survey-check-item"><input type="radio" name="shareFormat" value="线上直播"><span>线上直播</span></label>
-              <label class="survey-check-item"><input type="radio" name="shareFormat" value="录播"><span>录播</span></label>
-              <label class="survey-check-item"><input type="radio" name="shareFormat" value="线下"><span>线下</span></label>
-              <label class="survey-check-item"><input type="radio" name="shareFormat" value="都行"><span>都行</span></label>
+        <div class="role-fields" id="roleStrategist">
+          <div class="survey-section-label">📐 策略者专属</div>
+          <div class="survey-field"><label>你擅长的领域（多选）</label>
+            <div class="multi-tags" data-multi="stratDomain">
+              <span class="multi-tag" data-value="产品规划">产品规划</span><span class="multi-tag" data-value="增长策略">增长策略</span><span class="multi-tag" data-value="数据分析">数据分析</span><span class="multi-tag" data-value="商业模式">商业模式</span>
             </div>
+            <input type="hidden" name="stratDomain" data-hidden>
+          </div>
+          <div class="survey-field"><label>目前/最近负责的产品或业务</label><input type="text" name="stratBiz" placeholder="一句话描述"></div>
+          <div class="survey-field"><label>你接触过的最有意思的增长案例</label><input type="text" name="stratCase" placeholder="一句话，看直觉"></div>
+        </div>
+
+        <div class="role-fields" id="roleCreator">
+          <div class="survey-section-label">🎨 创作者专属</div>
+          <div class="survey-field"><label>你的创作方向（多选）</label>
+            <div class="multi-tags" data-multi="creatorPlatform">
+              <span class="multi-tag" data-value="公众号">公众号</span><span class="multi-tag" data-value="小红书">小红书</span><span class="multi-tag" data-value="视频/B站">视频/B站</span><span class="multi-tag" data-value="播客">播客</span><span class="multi-tag" data-value="即刻">即刻</span><span class="multi-tag" data-value="Twitter">Twitter</span>
+            </div>
+            <input type="hidden" name="creatorPlatform" data-hidden>
+          </div>
+          <div class="survey-field"><label>你最满意的一篇/一期作品链接（可选）</label><input type="text" name="creatorLink" placeholder="链接"></div>
+          <div class="survey-field"><label>创作频率</label>
+            <select class="enum-select" name="creatorFreq"><option value="" disabled selected>请选择</option><option value="日更">日更</option><option value="周更">周更</option><option value="月更">月更</option><option value="不定时">不定时</option></select>
+          </div>
+          <div class="survey-field"><label>对 AI 内容的兴趣方向（多选）</label>
+            <div class="multi-tags" data-multi="creatorAI">
+              <span class="multi-tag" data-value="AI教程">AI 教程</span><span class="multi-tag" data-value="产品测评">产品测评</span><span class="multi-tag" data-value="行业分析">行业分析</span><span class="multi-tag" data-value="个人成长">个人成长</span>
+            </div>
+            <input type="hidden" name="creatorAI" data-hidden>
           </div>
         </div>
 
-        <!-- 项目 branch -->
-        <div class="survey-branch" id="surveyBranchProject">
-          <div class="survey-section-label">项目方向</div>
-
-          <div class="survey-field">
-            <label>项目名称</label>
-            <input type="text" name="projectName" placeholder="如果还没名字，写个代号也行">
+        <div class="role-fields" id="roleExplorer">
+          <div class="survey-section-label">🔭 探索者专属</div>
+          <div class="survey-field"><label>你所在的行业</label><input type="text" name="explorerIndustry" placeholder="金融/医疗/教育/法律/制造……"></div>
+          <div class="survey-field"><label>行业经验年限</label>
+            <select class="enum-select" name="explorerYears"><option value="" disabled selected>请选择</option><option value="<1年">&lt;1年</option><option value="1-3年">1-3年</option><option value="3-5年">3-5年</option><option value="5年+">5年+</option></select>
           </div>
+          <div class="survey-field"><label>你最熟悉的业务场景</label><input type="text" name="explorerScene" placeholder="一句话，比如跨境电商选品"></div>
+          <div class="survey-field"><label>目前对 AI 的探索方向</label><textarea name="explorerAI" placeholder="想在哪个环节用 AI？遇到什么卡点？"></textarea></div>
+        </div>
 
-          <div class="survey-field">
-            <label>一句话描述你的项目</label>
-            <input type="text" name="projectDesc" placeholder="如：用 AI 帮跨境卖家自动生成 listing 文案">
+        <div class="role-fields" id="roleLearner">
+          <div class="survey-section-label">🌱 学习者专属</div>
+          <div class="survey-field"><label>目前对 AI 的了解程度</label>
+            <select class="enum-select" name="learnerLevel"><option value="" disabled selected>请选择</option><option value="完全新手">完全新手</option><option value="用过ChatGPT">用过 ChatGPT</option><option value="了解基础概念">了解基础概念</option><option value="有过实践">有过实践</option></select>
           </div>
-
-          <div class="survey-field">
-            <label>项目目前在什么阶段？</label>
-            <div class="survey-checkboxes">
-              <label class="survey-check-item"><input type="radio" name="projectStage" value="想法阶段"><span>💡 想法阶段</span></label>
-              <label class="survey-check-item"><input type="radio" name="projectStage" value="已启动"><span>🚀 已启动</span></label>
-              <label class="survey-check-item"><input type="radio" name="projectStage" value="已有产品"><span>📦 已有产品</span></label>
-              <label class="survey-check-item"><input type="radio" name="projectStage" value="已有收入"><span>💰 已有收入</span></label>
+          <div class="survey-field"><label>你最想学什么（多选）</label>
+            <div class="multi-tags" data-multi="learnerWant">
+              <span class="multi-tag" data-value="AI工具使用">AI 工具使用</span><span class="multi-tag" data-value="Prompt工程">Prompt 工程</span><span class="multi-tag" data-value="AI编程">AI 编程</span><span class="multi-tag" data-value="AI产品思维">AI 产品思维</span>
             </div>
+            <input type="hidden" name="learnerWant" data-hidden>
           </div>
-
-          <div class="survey-field">
-            <label>你最需要什么类型的人？</label>
-            <div class="survey-checkboxes">
-              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="技术"><span>技术</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="设计"><span>设计</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="运营"><span>运营</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="市场"><span>市场</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="投资"><span>投资</span></label>
-              <label class="survey-check-item"><input type="checkbox" name="needPeople" value="都需要"><span>都需要</span></label>
-            </div>
-          </div>
-
-          <div class="survey-field">
-            <label>你能为合作者提供什么？</label>
-            <textarea name="canOffer" placeholder="如：技术股份、收入分成、行业资源……"></textarea>
+          <div class="survey-field"><label>你在其他领域的经验/特长</label><input type="text" name="learnerSkill" placeholder="会剪视频？做过销售？会画画？" required></div>
+          <div class="survey-field"><label>愿意投入的时间</label>
+            <select class="enum-select" name="learnerTime"><option value="" disabled selected>请选择</option><option value="每天半小时">每天半小时</option><option value="每周几小时">每周几小时</option><option value="随缘">随缘</option></select>
           </div>
         </div>
 
-        <button type="submit" class="survey-btn-submit">提交问卷 🦞</button>
+        <div class="survey-field">
+          <label>你想在社群中获得什么？ *</label>
+          <textarea name="goal" placeholder="2-3 句话，越具体越好。这是最重要的一个问题" required></textarea>
+        </div>
+
+        <button type="submit" class="survey-btn-submit" id="surveySubmitBtn">提交问卷 🦞</button>
         <button type="button" class="survey-btn-skip" onclick="closeSurvey()">先跳过，之后再填</button>
       </form>
     </div>
 
-    <!-- Thanks state -->
     <div class="survey-thanks" id="surveyThanks">
       <div class="survey-thanks-icon">🎉</div>
       <div class="survey-thanks-title">提交成功！</div>
@@ -2638,7 +2714,7 @@ function selectRole(card) {
     burstFlowers(card);
     // Open survey modal after flower animation
     setTimeout(function() {
-      openSurvey(selectedRoleName);
+      openSurvey(role);
     }, 800);
   } else {
     document.getElementById('roleToast').classList.remove('visible');
@@ -2732,7 +2808,87 @@ window.addEventListener('scroll', function() {
 }, { passive: true });
 
 // ========== Survey Modal ==========
-function openSurvey(roleName) {
+// Configurable 飞书 webhook — set this when ready
+var FEISHU_WEBHOOK = '';
+
+var roleKeyMap = { builder:'构建者', strategist:'策略者', creator:'创作者', explorer:'探索者', learner:'学习者' };
+var selectedRoleKey = '';
+
+// City data
+var CITIES = ['北京','上海','广州','深圳','杭州','成都','武汉','南京','西安','重庆','苏州','长沙','天津','郑州','青岛','厦门','合肥','福州','大连','沈阳','昆明','贵阳','海口','三亚','珠海','东莞','佛山','宁波','无锡','常州','南宁','哈尔滨','长春','石家庄','太原','南昌','济南','兰州','乌鲁木齐','拉萨','新加坡','东京','首尔','旧金山/湾区','纽约','伦敦','多伦多','悉尼','墨尔本','柏林','巴黎','迪拜','曼谷','吉隆坡','胡志明市','雅加达','阿姆斯特丹','奥克兰','惠灵顿','其他海外城市','其他国内城市'];
+
+// Init city search
+(function(){
+  var input = document.getElementById('citySearchInput');
+  var dropdown = document.getElementById('cityDropdown');
+  if (!input || !dropdown) return;
+  input.addEventListener('input', function(){
+    var val = this.value.trim().toLowerCase();
+    dropdown.innerHTML = '';
+    if (!val) { dropdown.classList.remove('show'); return; }
+    var matched = CITIES.filter(function(c){ return c.toLowerCase().indexOf(val) !== -1 || c.indexOf(this.value.trim()) !== -1; }.bind(this));
+    if (!matched.length) { dropdown.innerHTML = '<div class="city-dropdown-item no-match">未找到匹配城市，请尝试其他关键词</div>'; }
+    else { matched.forEach(function(c){ dropdown.innerHTML += '<div class="city-dropdown-item" data-city="' + c + '">' + c + '</div>'; }); }
+    dropdown.classList.add('show');
+  });
+  input.addEventListener('focus', function(){ if (this.value.trim() && dropdown.children.length) dropdown.classList.add('show'); });
+  dropdown.addEventListener('click', function(e){
+    var item = e.target.closest('.city-dropdown-item');
+    if (!item || item.classList.contains('no-match')) return;
+    input.value = item.getAttribute('data-city');
+    dropdown.classList.remove('show');
+  });
+  document.addEventListener('click', function(e){ if (!e.target.closest('#citySearchWrap')) dropdown.classList.remove('show'); });
+})();
+
+// Multi-tag toggle for all .multi-tags groups
+function initMultiTags(container) {
+  var tags = container.querySelectorAll('.multi-tag');
+  var hidden = container.querySelector('[data-hidden]');
+  var customInput = container.parentElement.querySelector('.multi-custom');
+  tags.forEach(function(tag){
+    tag.addEventListener('click', function(){
+      this.classList.toggle('active');
+      syncMultiHidden(container);
+    });
+  });
+  if (customInput) {
+    customInput.addEventListener('keydown', function(e){
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var val = this.value.trim();
+        if (!val) return;
+        // Check if already exists as a tag
+        var existing = container.querySelector('.multi-tag[data-value="' + val + '"]');
+        if (!existing) {
+          var newTag = document.createElement('span');
+          newTag.className = 'multi-tag active';
+          newTag.setAttribute('data-value', val);
+          newTag.textContent = val;
+          newTag.addEventListener('click', function(){ this.classList.toggle('active'); syncMultiHidden(container); });
+          container.appendChild(newTag);
+        }
+        this.value = '';
+        syncMultiHidden(container);
+      }
+    });
+  }
+}
+
+function syncMultiHidden(container) {
+  var hidden = container.querySelector('[data-hidden]');
+  if (!hidden) return;
+  var vals = [];
+  container.querySelectorAll('.multi-tag.active').forEach(function(t){ vals.push(t.getAttribute('data-value')); });
+  hidden.value = vals.join(',');
+}
+
+// Init all multi-select groups in the form
+document.querySelectorAll('#surveyForm .multi-tags').forEach(function(g){ initMultiTags(g); });
+// Init standalone multi-selects inside role-fields
+document.querySelectorAll('.role-fields .multi-tags').forEach(function(g){ initMultiTags(g); });
+
+function openSurvey(roleKey) {
   var overlay = document.getElementById('surveyOverlay');
   var title = document.getElementById('surveyTitle');
   var subtitle = document.getElementById('surveySubtitle');
@@ -2740,49 +2896,49 @@ function openSurvey(roleName) {
   var thanks = document.getElementById('surveyThanks');
   var form = document.getElementById('surveyForm');
 
-  // Reset state
+  selectedRoleKey = roleKey;
+
+  // Reset
   formWrap.style.display = '';
   thanks.classList.remove('active');
   form.reset();
 
-  // Reset branches
-  document.getElementById('surveyBranchShare').classList.remove('active');
-  document.getElementById('surveyBranchProject').classList.remove('active');
+  // Reset all role fields
+  document.querySelectorAll('.role-fields').forEach(function(el){ el.classList.remove('active'); });
+  // Reset multi-tags
+  document.querySelectorAll('#surveyForm .multi-tag.active').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('#surveyForm [data-hidden]').forEach(function(h){ h.value = ''; });
 
-  // Determine branch based on role name
-  var isShareRole = /创作者|策略者/.test(roleName);
-  var isProjectRole = /构建者|探索者/.test(roleName);
-
-  if (isShareRole) {
-    document.getElementById('surveyBranchShare').classList.add('active');
-    subtitle.textContent = '你选了' + roleName.split(' ')[0] + '，看起来你有东西想和大家分享！多填几个问题，帮我们更好地安排。';
-  } else if (isProjectRole) {
-    document.getElementById('surveyBranchProject').classList.add('active');
-    subtitle.textContent = '你选了' + roleName.split(' ')[0] + '，听起来你有项目想搞！多填几个问题，帮我们给你找搭档。';
-  } else {
-    subtitle.textContent = '花 2 分钟填个小问卷，帮我们更好地连接你和社群里的同路人。';
+  // Show role-specific fields
+  var roleFieldMap = {
+    builder: 'roleBuilder',
+    strategist: 'roleStrategist',
+    creator: 'roleCreator',
+    explorer: 'roleExplorer',
+    learner: 'roleLearner'
+  };
+  var fieldId = roleFieldMap[roleKey];
+  if (fieldId) {
+    var el = document.getElementById(fieldId);
+    if (el) el.classList.add('active');
   }
 
-  title.textContent = '🦞 欢迎，' + roleName.split(' ')[0] + '！';
+  var roleName = roleKeyMap[roleKey] || '新朋友';
+  title.textContent = '🦞 欢迎，' + roleName + '！';
+  subtitle.textContent = '你选了' + roleName + '。花 2 分钟填完，帮我们更好地连接你和社群里的同路人。';
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
 function closeSurvey() {
-  var overlay = document.getElementById('surveyOverlay');
-  overlay.classList.remove('active');
+  document.getElementById('surveyOverlay').classList.remove('active');
   document.body.style.overflow = '';
 }
 
-// Close on overlay click (not modal)
 document.getElementById('surveyOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeSurvey();
 });
-
-// Close button
 document.getElementById('surveyClose').addEventListener('click', closeSurvey);
-
-// ESC key
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeSurvey();
 });
@@ -2790,52 +2946,51 @@ document.addEventListener('keydown', function(e) {
 function submitSurvey(e) {
   e.preventDefault();
   var form = e.target;
+  var btn = document.getElementById('surveySubmitBtn');
+  btn.textContent = '提交中…';
+  btn.disabled = true;
+
   var data = {};
 
-  // Collect text/textarea inputs
-  var inputs = form.querySelectorAll('input[type="text"], textarea, select');
-  inputs.forEach(function(el) {
-    if (el.name && el.value.trim()) {
+  // Collect all text, select, hidden inputs
+  form.querySelectorAll('input[type="text"], input[type="hidden"], textarea, select').forEach(function(el){
+    if (el.name && el.value && el.value.trim()) {
       data[el.name] = el.value.trim();
     }
   });
 
-  // Collect checkboxes
-  var checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
-  checkboxes.forEach(function(el) {
-    if (!data[el.name]) data[el.name] = [];
-    data[el.name].push(el.value);
-  });
-
-  // Collect radios
-  var radios = form.querySelectorAll('input[type="radio"]:checked');
-  radios.forEach(function(el) {
-    data[el.name] = el.value;
-  });
-
-  // Add role and timestamp
-  data.role = selectedRoleName;
+  data.role = selectedRoleKey;
+  data.roleName = roleKeyMap[selectedRoleKey] || '';
   data.timestamp = new Date().toISOString();
 
-  // Save to localStorage
+  // Save to localStorage (always)
   var existing = [];
-  try {
-    existing = JSON.parse(localStorage.getItem('growthcore_surveys') || '[]');
-  } catch(err) {}
+  try { existing = JSON.parse(localStorage.getItem('growthcore_surveys_v2') || '[]'); } catch(err) {}
   existing.push(data);
-  localStorage.setItem('growthcore_surveys', JSON.stringify(existing));
+  localStorage.setItem('growthcore_surveys_v2', JSON.stringify(existing));
+
+  // Try 飞书 webhook
+  if (FEISHU_WEBHOOK) {
+    fetch(FEISHU_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ msg_type: 'interactive', card: { header: { title: { tag: 'plain_text', content: '🦞 新成员申请' } }, elements: [{ tag: 'div', text: { tag: 'plain_text', content: JSON.stringify(data, null, 2) } }] } })
+    }).catch(function(){});
+  }
 
   // Show thanks
   document.getElementById('surveyFormWrap').style.display = 'none';
   document.getElementById('surveyThanks').classList.add('active');
+  btn.textContent = '提交问卷 🦞';
+  btn.disabled = false;
 }
 
-// Also allow opening survey from join button
 document.getElementById('joinCta').addEventListener('click', function(e) {
   e.preventDefault();
   triggerFlowers(e);
   setTimeout(function() {
-    openSurvey(selectedRoleName || '新朋友');
+    if (selectedRoleKey) openSurvey(selectedRoleKey);
+    else openSurvey('builder');
   }, 600);
 });
 </script>
