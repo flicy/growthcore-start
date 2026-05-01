@@ -3016,12 +3016,14 @@ function submitSurvey(e) {
   existing.push(data);
   localStorage.setItem('growthcore_surveys_v2', JSON.stringify(existing));
 
-  // Webhook
-  if (FEISHU_WEBHOOK) {
-    try {
-      fetch(FEISHU_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ msg_type: 'text', content: { text: '🦞 新成员申请\n\n角色: ' + data.roleName + '\n昵称: ' + data.nickname + '\n微信: ' + data.wechat + '\n城市: ' + data.city + '\n职业: ' + data.occupation + '\nAI频率: ' + data.aiFrequency + '\nAI工具: ' + data.aiTools + '\n来源: ' + data.source + '\n想获得: ' + data.goal + '\n时间: ' + data.timestamp } }) });
-    } catch(err) {}
-  }
+  // 提交到本地代理 → 飞书多维表格
+  try {
+    fetch('http://localhost:3456/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(function(){});
+  } catch(err) {}
 
   // Success — close modal, show brief alert-style feedback
   setTimeout(function(){
