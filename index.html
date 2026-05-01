@@ -2484,11 +2484,13 @@ footer p {
         <div class="survey-field">
           <label>昵称 *</label>
           <input type="text" name="name" placeholder="你希望在社群里被怎么称呼" required>
+          <div class="field-error"></div>
         </div>
 
         <div class="survey-field">
           <label>微信号 *</label>
           <input type="text" name="wechat" placeholder="方便拉群和后续沟通" required>
+          <div class="field-error"></div>
         </div>
 
         <div class="survey-field">
@@ -2532,30 +2534,36 @@ footer p {
           </select>
           <div class="field-error"></div>
         </div>
-        </div>
 
         <div class="survey-field">
           <label>你用过哪些 AI 工具？（多选）</label>
           <div class="multi-tags" id="aiToolsTags">
-            <span class="multi-tag" data-value="ChatGPT">ChatGPT</span>
-            <span class="multi-tag" data-value="Claude">Claude</span>
-            <span class="multi-tag" data-value="Claude Code">Claude Code</span>
-            <span class="multi-tag" data-value="Grok">Grok</span>
-            <span class="multi-tag" data-value="Gemini">Gemini</span>
-            <span class="multi-tag" data-value="DeepSeek">DeepSeek</span>
-            <span class="multi-tag" data-value="Kimi">Kimi</span>
+            <span class="multi-tag" data-value="GPT-5.4">GPT-5.4</span>
+            <span class="multi-tag" data-value="Claude Opus 4.6">Claude Opus 4.6</span>
+            <span class="multi-tag" data-value="Gemini 3.1">Gemini 3.1</span>
             <span class="multi-tag" data-value="豆包">豆包</span>
+            <span class="multi-tag" data-value="Kimi">Kimi</span>
             <span class="multi-tag" data-value="通义千问">通义千问</span>
+            <span class="multi-tag" data-value="DeepSeek">DeepSeek</span>
+            <span class="multi-tag" data-value="Midjourney V8">Midjourney V8</span>
+            <span class="multi-tag" data-value="Flux 1.5">Flux 1.5</span>
+            <span class="multi-tag" data-value="Adobe Firefly">Adobe Firefly</span>
+            <span class="multi-tag" data-value="通义万相">通义万相</span>
+            <span class="multi-tag" data-value="即梦 AI">即梦 AI</span>
+            <span class="multi-tag" data-value="Sora 2.0">Sora 2.0</span>
+            <span class="multi-tag" data-value="可灵 Kling">可灵 Kling</span>
+            <span class="multi-tag" data-value="Runway Gen-3">Runway Gen-3</span>
+            <span class="multi-tag" data-value="Pika 1.0">Pika 1.0</span>
+            <span class="multi-tag" data-value="ElevenLabs">ElevenLabs</span>
+            <span class="multi-tag" data-value="Suno AI">Suno AI</span>
+            <span class="multi-tag" data-value="GitHub Copilot X">GitHub Copilot X</span>
             <span class="multi-tag" data-value="Cursor">Cursor</span>
-            <span class="multi-tag" data-value="GitHub Copilot">GitHub Copilot</span>
-            <span class="multi-tag" data-value="Windsurf">Windsurf</span>
-            <span class="multi-tag" data-value="Bolt">Bolt</span>
-            <span class="multi-tag" data-value="Midjourney">Midjourney</span>
-            <span class="multi-tag" data-value="Suno">Suno</span>
+            <span class="multi-tag" data-value="Tabnine">Tabnine</span>
             <span class="multi-tag" data-value="Notion AI">Notion AI</span>
+            <span class="multi-tag" data-value="Microsoft 365 Copilot">Microsoft 365 Copilot</span>
+            <span class="multi-tag" data-value="讯飞智文">讯飞智文</span>
             <span class="multi-tag" data-value="Coze">Coze</span>
-            <span class="multi-tag" data-value="Dify">Dify</span>
-            <span class="multi-tag" data-value="Cola">Cola</span>
+            <span class="multi-tag" data-value="Perplexity">Perplexity</span>
             <input type="hidden" name="aiTools" data-hidden>
           </div>
           <input type="text" class="multi-custom" data-for="aiToolsTags" placeholder="其他工具（自填，回车添加）" style="margin-top:8px;">
@@ -2981,19 +2989,31 @@ function submitSurvey(e) {
   document.querySelectorAll('.field-error').forEach(function(e){ e.classList.remove('show'); e.textContent = ''; });
   document.querySelectorAll('.survey-field.error').forEach(function(e){ e.classList.remove('error'); });
 
-  // Validate required fields
+  // Validate required fields, scroll to first error
   var requireds = form.querySelectorAll('[required]');
   var hasError = false;
+  var firstEl = null;
   requireds.forEach(function(el){
-    if (!el.value.trim()) {
+    var val = el.value;
+    if (el.tagName === 'INPUT' && el.type === 'hidden') val = el.value;
+    if (!val || !val.trim()) {
+      if (!hasError) firstEl = el;
       hasError = true;
       var field = el.closest('.survey-field');
-      if (field) field.classList.add('error');
-      var errEl = field ? field.querySelector('.field-error') : null;
-      if (errEl) { errEl.textContent = '请填写此项'; errEl.classList.add('show'); }
+      if (field) {
+        field.classList.add('error');
+        var errEl = field.querySelector('.field-error');
+        if (errEl) { errEl.textContent = '请填写此项'; errEl.classList.add('show'); }
+      }
     }
   });
-  if (hasError) return;
+  if (hasError) {
+    if (firstEl) {
+      firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function(){ firstEl.focus(); }, 400);
+    }
+    return false;
+  }
 
   btn.textContent = '提交中…';
   btn.disabled = true;
