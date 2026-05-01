@@ -1637,36 +1637,6 @@ footer p {
   box-shadow: 0 8px 24px rgba(232, 93, 58, 0.2);
 }
 
-/* City search dropdown */
-.city-search-wrap { position: relative; width: 100%; }
-.city-search-input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--ink-faint); border-radius: var(--radius-xs); font-size: 15px; background: var(--bg-card); color: var(--ink); font-family: inherit; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
-.city-search-input:focus { border-color: var(--accent); }
-.city-dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: 220px; overflow-y: auto; background: var(--bg-card); border: 1.5px solid var(--ink-faint); border-radius: var(--radius-xs); z-index: 10; margin-top: 4px; box-shadow: var(--shadow-md); }
-.city-dropdown.show { display: block; }
-.city-dropdown-item { padding: 8px 16px; cursor: pointer; font-size: 14px; transition: background 0.15s; }
-.city-dropdown-item:hover, .city-dropdown-item.selected { background: var(--accent-soft); color: var(--accent); }
-.city-dropdown-item.no-match { color: var(--ink-tertiary); cursor: default; pointer-events: none; }
-
-/* Enum select */
-.enum-select { width: 100%; padding: 12px 16px; border: 1.5px solid var(--ink-faint); border-radius: var(--radius-xs); font-size: 15px; background: var(--bg-card); color: var(--ink); font-family: inherit; outline: none; cursor: pointer; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23A1A1AA' stroke-width='1.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; box-sizing: border-box; }
-.enum-select:focus { border-color: var(--accent); }
-
-/* Inline field error */
-.field-error { display: none; color: var(--accent); font-size: 13px; margin-top: 4px; }
-.field-error.show { display: block; }
-.survey-field.error input, .survey-field.error select { border-color: var(--accent); }
-
-/* Multi-select tags */
-.multi-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.multi-tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1.5px solid var(--ink-faint); border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; user-select: none; white-space: nowrap; }
-.multi-tag:hover { border-color: var(--accent); background: var(--accent-soft); }
-.multi-tag.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-.multi-custom { flex: 1; min-width: 120px; border: none; outline: none; font-size: 13px; padding: 6px 8px; font-family: inherit; }
-
-/* Role field sets */
-.role-fields { display: none; margin-top: 8px; }
-.role-fields.active { display: block; }
-
 /* ========== Social Connect Section ========== */
 #social-connect {
   background: var(--bg-dark);
@@ -1891,6 +1861,42 @@ footer p {
     align-items: center;
   }
 }
+
+/* City search dropdown */
+.city-search-wrap { position: relative; width: 100%; }
+.city-search-input { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-xs); font-size: 14px; font-family: inherit; color: var(--ink); background: var(--bg); outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+.city-search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.city-dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: 220px; overflow-y: auto; background: var(--bg-card); border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-xs); z-index: 10; margin-top: 4px; box-shadow: var(--shadow-md); }
+.city-dropdown.show { display: block; }
+.city-dropdown-item { padding: 8px 16px; cursor: pointer; font-size: 14px; transition: background 0.15s; }
+.city-dropdown-item:hover { background: var(--accent-soft); color: var(--accent); }
+.city-dropdown-item.no-match { color: var(--ink-tertiary); cursor: default; pointer-events: none; }
+
+/* Enum select */
+.enum-select { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-xs); font-size: 14px; font-family: inherit; color: var(--ink); background: var(--bg); outline: none; cursor: pointer; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23A1A1AA' stroke-width='1.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; box-sizing: border-box; }
+.enum-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* Multi-select tags */
+.multi-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.multi-tag { padding: 8px 16px; border: 1px solid var(--ink-tertiary); border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s; user-select: none; }
+.multi-tag.active { background: var(--accent); color: white; border-color: var(--accent); }
+.multi-tag:hover { border-color: var(--accent); }
+.multi-custom { width: 100%; padding: 10px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: var(--radius-xs); font-size: 14px; font-family: inherit; color: var(--ink); background: var(--bg); outline: none; transition: border-color 0.2s; }
+
+/* Role fields */
+.role-fields { display: none; }
+.role-fields.active { display: block; }
+
+/* Survey section label override */
+.survey-section-label { font-size: 14px; font-weight: 700; color: var(--accent); margin: 20px 0 12px; text-transform: uppercase; }
+
+/* Inline field error */
+.field-error { display: none; color: var(--accent); font-size: 13px; margin-top: 4px; }
+.field-error.show { display: block; }
+.survey-field.error input, .survey-field.error select { border-color: var(--accent); }
+
+/* Submit button disabled */
+.survey-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -2476,200 +2482,194 @@ footer p {
       <p class="survey-modal-subtitle" id="surveySubtitle">花 2 分钟填个小问卷，帮我们更好地连接你和社群里的同路人。</p>
     </div>
 
+    <!-- Form -->
     <div class="survey-modal-body" id="surveyFormWrap">
-      <form id="surveyForm" onsubmit="submitSurvey(event)" novalidate>
+      <form id="surveyForm" onsubmit="return submitSurvey(event)" novalidate>
+  <div class="survey-section-label">基本信息</div>
 
-        <div class="survey-section-label">基本信息</div>
+  <div class="survey-field">
+    <label>昵称 *</label>
+    <input type="text" name="nickname" placeholder="你希望在社群里被怎么称呼" required>
+    <div class="field-error"></div>
+  </div>
 
-        <div class="survey-field">
-          <label>昵称 *</label>
-          <input type="text" name="name" placeholder="你希望在社群里被怎么称呼" required>
-          <div class="field-error"></div>
-        </div>
+  <div class="survey-field">
+    <label>微信号 *</label>
+    <input type="text" name="wechat" placeholder="方便拉群和后续沟通" required>
+    <div class="field-error"></div>
+  </div>
 
-        <div class="survey-field">
-          <label>微信号 *</label>
-          <input type="text" name="wechat" placeholder="方便拉群和后续沟通" required>
-          <div class="field-error"></div>
-        </div>
+  <div class="survey-field">
+    <label>所在城市 *</label>
+    <div class="city-search-wrap" id="citySearchWrap">
+      <input type="text" class="city-search-input" id="citySearchInput" name="city" placeholder="输入城市名搜索…" autocomplete="off" required>
+      <div class="city-dropdown" id="cityDropdown"></div>
+    </div>
+    <div class="field-error"></div>
+  </div>
 
-        <div class="survey-field">
-          <label>所在城市 *</label>
-          <div class="city-search-wrap" id="citySearchWrap">
-            <input type="text" class="city-search-input" id="citySearchInput" name="city" placeholder="输入城市名搜索…" autocomplete="off" required>
-            <div class="city-dropdown" id="cityDropdown"></div>
-          </div>
-        </div>
+  <div class="survey-field">
+    <label>当前职业/身份 *</label>
+    <select class="enum-select" name="occupation" required>
+      <option value="" disabled selected>请选择</option>
+      <option value="产品经理">产品经理</option>
+      <option value="软件工程师/开发者">软件工程师/开发者</option>
+      <option value="设计师">设计师</option>
+      <option value="创业者/创始人">创业者/创始人</option>
+      <option value="运营/市场/增长">运营/市场/增长</option>
+      <option value="内容创作者/自媒体">内容创作者/自媒体</option>
+      <option value="数据分析师/科学家">数据分析师/科学家</option>
+      <option value="AI/ML 工程师">AI/ML 工程师</option>
+      <option value="学生">学生</option>
+      <option value="自由职业者">自由职业者</option>
+      <option value="咨询/投资">咨询/投资</option>
+      <option value="传统行业从业者">传统行业从业者</option>
+      <option value="教育/研究">教育/研究</option>
+      <option value="其他">其他</option>
+    </select>
+    <div class="field-error"></div>
+  </div>
 
-        <div class="survey-field">
-          <label>当前职业/身份 *</label>
-          <select class="enum-select" name="occupation" required>
-            <option value="" disabled selected>请选择</option>
-            <option value="产品经理">产品经理</option>
-            <option value="软件工程师/开发者">软件工程师/开发者</option>
-            <option value="设计师">设计师</option>
-            <option value="创业者/创始人">创业者/创始人</option>
-            <option value="运营/市场/增长">运营/市场/增长</option>
-            <option value="内容创作者/自媒体">内容创作者/自媒体</option>
-            <option value="数据分析师/科学家">数据分析师/科学家</option>
-            <option value="AI/ML 工程师">AI/ML 工程师</option>
-            <option value="学生">学生</option>
-            <option value="自由职业者">自由职业者</option>
-            <option value="咨询/投资">咨询/投资</option>
-            <option value="传统行业从业者">传统行业从业者</option>
-            <option value="教育/研究">教育/研究</option>
-            <option value="其他">其他</option>
-          </select>
-          <div class="field-error"></div>
-        </div>
+  <div class="survey-field">
+    <label>AI 使用频率 *</label>
+    <select class="enum-select" name="aiFrequency" required>
+      <option value="" disabled selected>请选择</option>
+      <option value="每天">每天</option>
+      <option value="每周几次">每周几次</option>
+      <option value="偶尔">偶尔</option>
+      <option value="刚开始">刚开始</option>
+    </select>
+    <div class="field-error"></div>
+  </div>
 
-        <div class="survey-field">
-          <label>AI 使用频率 *</label>
-          <select class="enum-select" name="aiFrequency" required>
-            <option value="" disabled selected>请选择</option>
-            <option value="每天">每天</option>
-            <option value="每周几次">每周几次</option>
-            <option value="偶尔">偶尔</option>
-            <option value="刚开始">刚开始</option>
-          </select>
-          <div class="field-error"></div>
-        </div>
+  <div class="survey-field">
+    <label>你用过哪些 AI 工具？（多选）</label>
+    <div class="multi-tags" id="aiToolsTags">
+      <span class="multi-tag" data-value="GPT-5.4">GPT-5.4</span>
+      <span class="multi-tag" data-value="Claude Opus 4.6">Claude Opus 4.6</span>
+      <span class="multi-tag" data-value="Gemini 3.1">Gemini 3.1</span>
+      <span class="multi-tag" data-value="豆包">豆包</span>
+      <span class="multi-tag" data-value="Kimi">Kimi</span>
+      <span class="multi-tag" data-value="通义千问">通义千问</span>
+      <span class="multi-tag" data-value="DeepSeek">DeepSeek</span>
+      <span class="multi-tag" data-value="Midjourney V8">Midjourney V8</span>
+      <span class="multi-tag" data-value="Flux 1.5">Flux 1.5</span>
+      <span class="multi-tag" data-value="Adobe Firefly">Adobe Firefly</span>
+      <span class="multi-tag" data-value="通义万相">通义万相</span>
+      <span class="multi-tag" data-value="即梦 AI">即梦 AI</span>
+      <span class="multi-tag" data-value="Sora 2.0">Sora 2.0</span>
+      <span class="multi-tag" data-value="可灵 Kling">可灵 Kling</span>
+      <span class="multi-tag" data-value="Runway Gen-3">Runway Gen-3</span>
+      <span class="multi-tag" data-value="Pika 1.0">Pika 1.0</span>
+      <span class="multi-tag" data-value="ElevenLabs">ElevenLabs</span>
+      <span class="multi-tag" data-value="Suno AI">Suno AI</span>
+      <span class="multi-tag" data-value="GitHub Copilot X">GitHub Copilot X</span>
+      <span class="multi-tag" data-value="Cursor">Cursor</span>
+      <span class="multi-tag" data-value="Tabnine">Tabnine</span>
+      <span class="multi-tag" data-value="Notion AI">Notion AI</span>
+      <span class="multi-tag" data-value="Microsoft 365 Copilot">Microsoft 365 Copilot</span>
+      <span class="multi-tag" data-value="讯飞智文">讯飞智文</span>
+      <span class="multi-tag" data-value="Coze">Coze</span>
+      <span class="multi-tag" data-value="Perplexity">Perplexity</span>
+      <input type="hidden" name="aiTools" data-hidden>
+    </div>
+    <input type="text" class="multi-custom" data-for="aiToolsTags" placeholder="其他工具（自填，回车添加）" style="margin-top:8px;">
+  </div>
 
-        <div class="survey-field">
-          <label>你用过哪些 AI 工具？（多选）</label>
-          <div class="multi-tags" id="aiToolsTags">
-            <span class="multi-tag" data-value="GPT-5.4">GPT-5.4</span>
-            <span class="multi-tag" data-value="Claude Opus 4.6">Claude Opus 4.6</span>
-            <span class="multi-tag" data-value="Gemini 3.1">Gemini 3.1</span>
-            <span class="multi-tag" data-value="豆包">豆包</span>
-            <span class="multi-tag" data-value="Kimi">Kimi</span>
-            <span class="multi-tag" data-value="通义千问">通义千问</span>
-            <span class="multi-tag" data-value="DeepSeek">DeepSeek</span>
-            <span class="multi-tag" data-value="Midjourney V8">Midjourney V8</span>
-            <span class="multi-tag" data-value="Flux 1.5">Flux 1.5</span>
-            <span class="multi-tag" data-value="Adobe Firefly">Adobe Firefly</span>
-            <span class="multi-tag" data-value="通义万相">通义万相</span>
-            <span class="multi-tag" data-value="即梦 AI">即梦 AI</span>
-            <span class="multi-tag" data-value="Sora 2.0">Sora 2.0</span>
-            <span class="multi-tag" data-value="可灵 Kling">可灵 Kling</span>
-            <span class="multi-tag" data-value="Runway Gen-3">Runway Gen-3</span>
-            <span class="multi-tag" data-value="Pika 1.0">Pika 1.0</span>
-            <span class="multi-tag" data-value="ElevenLabs">ElevenLabs</span>
-            <span class="multi-tag" data-value="Suno AI">Suno AI</span>
-            <span class="multi-tag" data-value="GitHub Copilot X">GitHub Copilot X</span>
-            <span class="multi-tag" data-value="Cursor">Cursor</span>
-            <span class="multi-tag" data-value="Tabnine">Tabnine</span>
-            <span class="multi-tag" data-value="Notion AI">Notion AI</span>
-            <span class="multi-tag" data-value="Microsoft 365 Copilot">Microsoft 365 Copilot</span>
-            <span class="multi-tag" data-value="讯飞智文">讯飞智文</span>
-            <span class="multi-tag" data-value="Coze">Coze</span>
-            <span class="multi-tag" data-value="Perplexity">Perplexity</span>
-            <input type="hidden" name="aiTools" data-hidden>
-          </div>
-          <input type="text" class="multi-custom" data-for="aiToolsTags" placeholder="其他工具（自填，回车添加）" style="margin-top:8px;">
-          <div class="field-error" data-error="aiTools"></div>
-        </div>
+  <div class="survey-field">
+    <label>从哪里知道 GrowthCore？（多选）</label>
+    <div class="multi-tags" id="sourceTags">
+      <span class="multi-tag" data-value="即刻">即刻</span>
+      <span class="multi-tag" data-value="朋友圈">朋友圈</span>
+      <span class="multi-tag" data-value="朋友推荐">朋友推荐</span>
+      <span class="multi-tag" data-value="OpenClaw社群">OpenClaw 社群</span>
+      <input type="hidden" name="source" data-hidden>
+    </div>
+    <input type="text" class="multi-custom" data-for="sourceTags" placeholder="其他渠道（自填，回车添加）" style="margin-top:8px;">
+  </div>
 
-        <div class="survey-field">
-          <label>从哪里知道 GrowthCore？（多选）</label>
-          <div class="multi-tags" id="sourceTags">
-            <span class="multi-tag" data-value="即刻">即刻</span>
-            <span class="multi-tag" data-value="朋友圈">朋友圈</span>
-            <span class="multi-tag" data-value="朋友推荐">朋友推荐</span>
-            <span class="multi-tag" data-value="OpenClaw社群">OpenClaw 社群</span>
-            <input type="hidden" name="source" data-hidden>
-          </div>
-          <input type="text" class="multi-custom" data-for="sourceTags" placeholder="其他渠道（自填，回车添加）" style="margin-top:8px;">
-          <div class="field-error" data-error="source"></div>
-        </div>
+  <!-- 构建者 -->
+  <div class="role-fields" id="roleBuilder">
+    <div class="survey-section-label">🔧 构建者专属</div>
+    <div class="survey-field"><label>技术栈（多选）</label>
+      <div class="multi-tags" data-multi="builderTech">
+        <span class="multi-tag" data-value="前端">前端</span><span class="multi-tag" data-value="后端">后端</span><span class="multi-tag" data-value="AI Agent">AI Agent</span><span class="multi-tag" data-value="全栈">全栈</span><span class="multi-tag" data-value="移动端">移动端</span>
+      </div>
+      <input type="hidden" name="builderTech" data-hidden>
+    </div>
+    <div class="survey-field"><label>做过的最满意的一个产品</label><input type="text" name="builderProduct" placeholder="一句话描述，有链接更好"></div>
+    <div class="survey-field"><label>用 AI 写代码的频率</label>
+      <select class="enum-select" name="builderAICode"><option value="" disabled selected>请选择</option><option value="主力工具">主力工具</option><option value="辅助工具">辅助工具</option><option value="偶尔用">偶尔用</option><option value="还没怎么用">还没怎么用</option></select>
+    </div>
+    <div class="survey-field"><label>目前在做的项目（可选）</label><input type="text" name="builderProject" placeholder="一句话描述"></div>
+    <div class="survey-field"><label>GitHub 主页（可选）</label><input type="text" name="builderGitHub" placeholder="https://github.com/你的用户名"></div>
+  </div>
 
-        <!-- Role-specific fields -->
-        <div class="role-fields" id="roleBuilder">
-          <div class="survey-section-label">🔧 构建者专属</div>
-          <div class="survey-field"><label>技术栈（多选）</label>
-            <div class="multi-tags" data-multi="builderTech">
-              <span class="multi-tag" data-value="前端">前端</span><span class="multi-tag" data-value="后端">后端</span><span class="multi-tag" data-value="AI Agent">AI Agent</span><span class="multi-tag" data-value="全栈">全栈</span><span class="multi-tag" data-value="移动端">移动端</span>
-            </div>
-            <input type="hidden" name="builderTech" data-hidden>
-          </div>
-          <div class="survey-field"><label>做过的最满意的一个产品</label><input type="text" name="builderProduct" placeholder="一句话描述，有链接更好"></div>
-          <div class="survey-field"><label>用 AI 写代码的频率</label>
-            <select class="enum-select" name="builderAICode"><option value="" disabled selected>请选择</option><option value="主力工具">主力工具</option><option value="辅助工具">辅助工具</option><option value="偶尔用">偶尔用</option><option value="还没怎么用">还没怎么用</option></select>
-          </div>
-          <div class="survey-field"><label>目前在做的项目（可选）</label><input type="text" name="builderProject" placeholder="一句话描述"></div>
-          <div class="survey-field"><label>GitHub / 个人主页（可选）</label><input type="text" name="builderLink" placeholder="链接"></div>
-        </div>
+  <!-- 策略者 -->
+  <div class="role-fields" id="roleStrategist">
+    <div class="survey-section-label">🎯 策略者专属</div>
+    <div class="survey-field"><label>擅长领域（多选）</label>
+      <div class="multi-tags" data-multi="strategistDomain">
+        <span class="multi-tag" data-value="增长策略">增长策略</span><span class="multi-tag" data-value="用户运营">用户运营</span><span class="multi-tag" data-value="0-1 启动">0-1 启动</span><span class="multi-tag" data-value="变现/商业化">变现/商业化</span><span class="multi-tag" data-value="数据驱动">数据驱动</span>
+      </div>
+      <input type="hidden" name="strategistDomain" data-hidden>
+    </div>
+    <div class="survey-field"><label>你负责的产品/业务</label><input type="text" name="strategistProduct" placeholder="一句话描述"></div>
+    <div class="survey-field"><label>你操盘过的增长案例（可选）</label><input type="text" name="strategistCase" placeholder="一句话描述"></div>
+  </div>
 
-        <div class="role-fields" id="roleStrategist">
-          <div class="survey-section-label">📐 策略者专属</div>
-          <div class="survey-field"><label>你擅长的领域（多选）</label>
-            <div class="multi-tags" data-multi="stratDomain">
-              <span class="multi-tag" data-value="产品规划">产品规划</span><span class="multi-tag" data-value="增长策略">增长策略</span><span class="multi-tag" data-value="数据分析">数据分析</span><span class="multi-tag" data-value="商业模式">商业模式</span>
-            </div>
-            <input type="hidden" name="stratDomain" data-hidden>
-          </div>
-          <div class="survey-field"><label>目前/最近负责的产品或业务</label><input type="text" name="stratBiz" placeholder="一句话描述"></div>
-          <div class="survey-field"><label>你接触过的最有意思的增长案例</label><input type="text" name="stratCase" placeholder="一句话，看直觉"></div>
-        </div>
+  <!-- 创作者 -->
+  <div class="role-fields" id="roleCreator">
+    <div class="survey-section-label">✍️ 创作者专属</div>
+    <div class="survey-field"><label>创作方向（多选）</label>
+      <div class="multi-tags" data-multi="creatorDirection">
+        <span class="multi-tag" data-value="写作/公众号">写作/公众号</span><span class="multi-tag" data-value="小红书">小红书</span><span class="multi-tag" data-value="视频/B站">视频/B站</span><span class="multi-tag" data-value="播客">播客</span><span class="multi-tag" data-value="即刻/推特">即刻/推特</span>
+      </div>
+      <input type="hidden" name="creatorDirection" data-hidden>
+    </div>
+    <div class="survey-field"><label>最满意的作品链接（可选）</label><input type="text" name="creatorWork" placeholder="链接"></div>
+    <div class="survey-field"><label>创作频率</label>
+      <select class="enum-select" name="creatorFrequency"><option value="" disabled selected>请选择</option><option value="几乎每天">几乎每天</option><option value="每周几次">每周几次</option><option value="偶尔">偶尔</option><option value="还在找感觉">还在找感觉</option></select>
+    </div>
+  </div>
 
-        <div class="role-fields" id="roleCreator">
-          <div class="survey-section-label">🎨 创作者专属</div>
-          <div class="survey-field"><label>你的创作方向（多选）</label>
-            <div class="multi-tags" data-multi="creatorPlatform">
-              <span class="multi-tag" data-value="公众号">公众号</span><span class="multi-tag" data-value="小红书">小红书</span><span class="multi-tag" data-value="视频/B站">视频/B站</span><span class="multi-tag" data-value="播客">播客</span><span class="multi-tag" data-value="即刻">即刻</span><span class="multi-tag" data-value="Twitter">Twitter</span>
-            </div>
-            <input type="hidden" name="creatorPlatform" data-hidden>
-          </div>
-          <div class="survey-field"><label>你最满意的一篇/一期作品链接（可选）</label><input type="text" name="creatorLink" placeholder="链接"></div>
-          <div class="survey-field"><label>创作频率</label>
-            <select class="enum-select" name="creatorFreq"><option value="" disabled selected>请选择</option><option value="日更">日更</option><option value="周更">周更</option><option value="月更">月更</option><option value="不定时">不定时</option></select>
-          </div>
-          <div class="survey-field"><label>对 AI 内容的兴趣方向（多选）</label>
-            <div class="multi-tags" data-multi="creatorAI">
-              <span class="multi-tag" data-value="AI教程">AI 教程</span><span class="multi-tag" data-value="产品测评">产品测评</span><span class="multi-tag" data-value="行业分析">行业分析</span><span class="multi-tag" data-value="个人成长">个人成长</span>
-            </div>
-            <input type="hidden" name="creatorAI" data-hidden>
-          </div>
-        </div>
+  <!-- 探索者 -->
+  <div class="role-fields" id="roleExplorer">
+    <div class="survey-section-label">🔍 探索者专属</div>
+    <div class="survey-field"><label>你的行业</label><input type="text" name="explorerIndustry" placeholder="比如：金融、医疗、教育"></div>
+    <div class="survey-field"><label>经验年限</label>
+      <select class="enum-select" name="explorerYears"><option value="" disabled selected>请选择</option><option value="1-3年">1-3年</option><option value="3-5年">3-5年</option><option value="5-10年">5-10年</option><option value="10年+">10年+</option></select>
+    </div>
+    <div class="survey-field"><label>熟悉的业务场景</label><input type="text" name="explorerScenario" placeholder="一句话描述"></div>
+  </div>
 
-        <div class="role-fields" id="roleExplorer">
-          <div class="survey-section-label">🔭 探索者专属</div>
-          <div class="survey-field"><label>你所在的行业</label><input type="text" name="explorerIndustry" placeholder="金融/医疗/教育/法律/制造……"></div>
-          <div class="survey-field"><label>行业经验年限</label>
-            <select class="enum-select" name="explorerYears"><option value="" disabled selected>请选择</option><option value="<1年">&lt;1年</option><option value="1-3年">1-3年</option><option value="3-5年">3-5年</option><option value="5年+">5年+</option></select>
-          </div>
-          <div class="survey-field"><label>你最熟悉的业务场景</label><input type="text" name="explorerScene" placeholder="一句话，比如跨境电商选品"></div>
-          <div class="survey-field"><label>目前对 AI 的探索方向</label><textarea name="explorerAI" placeholder="想在哪个环节用 AI？遇到什么卡点？"></textarea></div>
-        </div>
+  <!-- 学习者 -->
+  <div class="role-fields" id="roleLearner">
+    <div class="survey-section-label">🌱 学习者专属</div>
+    <div class="survey-field"><label>对 AI 的了解程度</label>
+      <select class="enum-select" name="learnerLevel"><option value="" disabled selected>请选择</option><option value="刚接触">刚接触</option><option value="会用几个工具">会用几个工具</option><option value="日常使用">日常使用</option><option value="已经开始自己探索">已经开始自己探索</option></select>
+    </div>
+    <div class="survey-field"><label>最想学什么（多选）</label>
+      <div class="multi-tags" data-multi="learnerInterest">
+        <span class="multi-tag" data-value="Prompt工程">Prompt工程</span><span class="multi-tag" data-value="AI Agent开发">AI Agent开发</span><span class="multi-tag" data-value="AI+工作流自动化">AI+工作流自动化</span><span class="multi-tag" data-value="AI生图/视频">AI生图/视频</span><span class="multi-tag" data-value="VibeCoding">VibeCoding</span>
+      </div>
+      <input type="hidden" name="learnerInterest" data-hidden>
+    </div>
+    <div class="survey-field"><label>其他领域的经验/特长</label><input type="text" name="learnerBackground" placeholder="比如：中医、烘焙、摄影"></div>
+  </div>
 
-        <div class="role-fields" id="roleLearner">
-          <div class="survey-section-label">🌱 学习者专属</div>
-          <div class="survey-field"><label>目前对 AI 的了解程度</label>
-            <select class="enum-select" name="learnerLevel"><option value="" disabled selected>请选择</option><option value="完全新手">完全新手</option><option value="用过ChatGPT">用过 ChatGPT</option><option value="了解基础概念">了解基础概念</option><option value="有过实践">有过实践</option></select>
-          </div>
-          <div class="survey-field"><label>你最想学什么（多选）</label>
-            <div class="multi-tags" data-multi="learnerWant">
-              <span class="multi-tag" data-value="AI工具使用">AI 工具使用</span><span class="multi-tag" data-value="Prompt工程">Prompt 工程</span><span class="multi-tag" data-value="AI编程">AI 编程</span><span class="multi-tag" data-value="AI产品思维">AI 产品思维</span>
-            </div>
-            <input type="hidden" name="learnerWant" data-hidden>
-          </div>
-          <div class="survey-field"><label>你在其他领域的经验/特长</label><input type="text" name="learnerSkill" placeholder="会剪视频？做过销售？会画画？" required></div>
-          <div class="survey-field"><label>愿意投入的时间</label>
-            <select class="enum-select" name="learnerTime"><option value="" disabled selected>请选择</option><option value="每天半小时">每天半小时</option><option value="每周几小时">每周几小时</option><option value="随缘">随缘</option></select>
-          </div>
-        </div>
+  <div class="survey-field" style="margin-top:16px;">
+    <label>你想在社群中获得什么？ *</label>
+    <textarea name="goal" placeholder="2-3 句话，越具体越好。这是最重要的一个问题" required></textarea>
+    <div class="field-error"></div>
+  </div>
 
-        <div class="survey-field">
-          <label>你想在社群中获得什么？ *</label>
-          <textarea name="goal" placeholder="2-3 句话，越具体越好。这是最重要的一个问题" required></textarea>
-          <div class="field-error"></div>
-        </div>
-
-        <button type="submit" class="survey-btn-submit" id="surveySubmitBtn">提交问卷 🦞</button>
-        <button type="button" class="survey-btn-skip" onclick="closeSurvey()">先跳过，之后再填</button>
-      </form>
+  <button type="submit" class="survey-btn-submit" id="surveySubmitBtn">提交问卷 🦞</button>
+  <button type="button" class="survey-btn-skip" onclick="closeSurvey()">先跳过，之后再填</button>
+</form>
     </div>
 
+    <!-- Thanks state -->
     <div class="survey-thanks" id="surveyThanks">
       <div class="survey-thanks-icon">🎉</div>
       <div class="survey-thanks-title">提交成功！</div>
@@ -2823,8 +2823,16 @@ window.addEventListener('scroll', function() {
   }
 }, { passive: true });
 
+// Also allow opening survey from join button
+document.getElementById('joinCta').addEventListener('click', function(e) {
+  e.preventDefault();
+  triggerFlowers(e);
+  setTimeout(function() {
+    openSurvey(selectedRoleKey || '');
+  }, 600);
+});
+
 // ========== Survey Modal ==========
-// Configurable 飞书 webhook — set this when ready
 var FEISHU_WEBHOOK = '';
 
 var roleKeyMap = { builder:'构建者', strategist:'策略者', creator:'创作者', explorer:'探索者', learner:'学习者' };
@@ -2833,7 +2841,7 @@ var selectedRoleKey = '';
 // City data
 var CITIES = ['北京','上海','广州','深圳','杭州','成都','武汉','南京','西安','重庆','苏州','长沙','天津','郑州','青岛','厦门','合肥','福州','大连','沈阳','昆明','贵阳','海口','三亚','珠海','东莞','佛山','宁波','无锡','常州','南宁','哈尔滨','长春','石家庄','太原','南昌','济南','兰州','乌鲁木齐','拉萨','新加坡','东京','首尔','旧金山/湾区','纽约','伦敦','多伦多','悉尼','墨尔本','柏林','巴黎','迪拜','曼谷','吉隆坡','胡志明市','雅加达','阿姆斯特丹','奥克兰','惠灵顿','其他海外城市','其他国内城市'];
 
-// Init city search
+// City search
 (function(){
   var input = document.getElementById('citySearchInput');
   var dropdown = document.getElementById('cityDropdown');
@@ -2843,7 +2851,7 @@ var CITIES = ['北京','上海','广州','深圳','杭州','成都','武汉','�
     dropdown.innerHTML = '';
     if (!val) { dropdown.classList.remove('show'); return; }
     var matched = CITIES.filter(function(c){ return c.toLowerCase().indexOf(val) !== -1 || c.indexOf(this.value.trim()) !== -1; }.bind(this));
-    if (!matched.length) { dropdown.innerHTML = '<div class="city-dropdown-item no-match">未找到匹配城市，请尝试其他关键词</div>'; }
+    if (!matched.length) { dropdown.innerHTML = '<div class="city-dropdown-item no-match">未找到匹配城市</div>'; }
     else { matched.forEach(function(c){ dropdown.innerHTML += '<div class="city-dropdown-item" data-city="' + c + '">' + c + '</div>'; }); }
     dropdown.classList.add('show');
   });
@@ -2857,19 +2865,13 @@ var CITIES = ['北京','上海','广州','深圳','杭州','成都','武汉','�
   document.addEventListener('click', function(e){ if (!e.target.closest('#citySearchWrap')) dropdown.classList.remove('show'); });
 })();
 
-// Multi-tag toggle for all .multi-tags groups
+// Multi-tag system
 function initMultiTags(container) {
-  var hidden = container.querySelector('[data-hidden]');
   var tags = container.querySelectorAll('.multi-tag');
   var customInput = null;
-  // Find associated custom input via data-for attribute or sibling search
   var forId = container.id;
-  if (forId) {
-    customInput = document.querySelector('.multi-custom[data-for="' + forId + '"]');
-  }
-  if (!customInput) {
-    customInput = container.parentElement.querySelector('.multi-custom');
-  }
+  if (forId) customInput = document.querySelector('.multi-custom[data-for="' + forId + '"]');
+  if (!customInput) customInput = container.parentElement.querySelector('.multi-custom');
 
   tags.forEach(function(tag){
     tag.addEventListener('click', function(){
@@ -2909,7 +2911,6 @@ function syncMultiHidden(container) {
   hidden.value = vals.join(',');
 }
 
-// Init all multi-select groups
 function initAllMultiTags() {
   document.querySelectorAll('#surveyForm .multi-tags').forEach(function(g){ initMultiTags(g); });
 }
@@ -2925,46 +2926,28 @@ function openSurvey(roleKey) {
 
   selectedRoleKey = roleKey;
 
-  // Reset
   formWrap.style.display = '';
   thanks.classList.remove('active');
   form.reset();
-
-  // Reset all role fields
   document.querySelectorAll('.role-fields').forEach(function(el){ el.classList.remove('active'); });
-  // Reset all multi-tags — deactivate and remove custom tags
   document.querySelectorAll('#surveyForm .multi-tag.active').forEach(function(t){ t.classList.remove('active'); });
-  document.querySelectorAll('#surveyForm .multi-tag').forEach(function(t){
-    // Remove dynamically added custom tags (not in original HTML dataset)
-    if (!t.hasAttribute('data-orig')) {
-      t.setAttribute('data-orig', '1');
-    }
-  });
-  // Sync all hidden inputs to empty
   document.querySelectorAll('#surveyForm [data-hidden]').forEach(function(h){ h.value = ''; });
-  // Clear field errors
   document.querySelectorAll('.field-error').forEach(function(e){ e.classList.remove('show'); e.textContent = ''; });
   document.querySelectorAll('.survey-field.error').forEach(function(e){ e.classList.remove('error'); });
 
-  // Show role-specific fields
-  var roleFieldMap = {
-    builder: 'roleBuilder',
-    strategist: 'roleStrategist',
-    creator: 'roleCreator',
-    explorer: 'roleExplorer',
-    learner: 'roleLearner'
-  };
-  var fieldId = roleFieldMap[roleKey];
-  if (fieldId) {
-    var el = document.getElementById(fieldId);
-    if (el) el.classList.add('active');
-  }
+  var fieldId = { builder:'roleBuilder', strategist:'roleStrategist', creator:'roleCreator', explorer:'roleExplorer', learner:'roleLearner' }[roleKey];
+  if (fieldId) { var el = document.getElementById(fieldId); if (el) el.classList.add('active'); }
 
   var roleName = roleKeyMap[roleKey] || '新朋友';
   title.textContent = '🦞 欢迎，' + roleName + '！';
   subtitle.textContent = '你选了' + roleName + '。花 2 分钟填完，帮我们更好地连接你和社群里的同路人。';
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
+  // Scroll modal to top
+  setTimeout(function(){
+    var modal = document.getElementById('surveyModal');
+    if (modal) modal.scrollTop = 0;
+  }, 100);
 }
 
 function closeSurvey() {
@@ -2972,30 +2955,25 @@ function closeSurvey() {
   document.body.style.overflow = '';
 }
 
-document.getElementById('surveyOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeSurvey();
-});
+document.getElementById('surveyOverlay').addEventListener('click', function(e) { if (e.target === this) closeSurvey(); });
 document.getElementById('surveyClose').addEventListener('click', closeSurvey);
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeSurvey();
-});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeSurvey(); });
 
 function submitSurvey(e) {
   e.preventDefault();
   var form = e.target;
   var btn = document.getElementById('surveySubmitBtn');
 
-  // Clear previous errors
+  // Clear errors
   document.querySelectorAll('.field-error').forEach(function(e){ e.classList.remove('show'); e.textContent = ''; });
   document.querySelectorAll('.survey-field.error').forEach(function(e){ e.classList.remove('error'); });
 
-  // Validate required fields, scroll to first error
+  // Validate
   var requireds = form.querySelectorAll('[required]');
   var hasError = false;
   var firstEl = null;
   requireds.forEach(function(el){
     var val = el.value;
-    if (el.tagName === 'INPUT' && el.type === 'hidden') val = el.value;
     if (!val || !val.trim()) {
       if (!hasError) firstEl = el;
       hasError = true;
@@ -3009,7 +2987,7 @@ function submitSurvey(e) {
   });
   if (hasError) {
     if (firstEl) {
-      firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       setTimeout(function(){ firstEl.focus(); }, 400);
     }
     return false;
@@ -3018,58 +2996,43 @@ function submitSurvey(e) {
   btn.textContent = '提交中…';
   btn.disabled = true;
 
-  var data = {};
-
-  // Collect all inputs
+  // Collect data
+  var data = { nickname: '', wechat: '', city: '', occupation: '', aiFrequency: '', aiTools: '', source: '', goal: '' };
   form.querySelectorAll('input[type="text"], input[type="hidden"], textarea, select').forEach(function(el){
-    if (el.name && el.value.trim()) {
-      data[el.name] = el.value.trim();
-    }
+    if (el.name && el.value && el.value.trim()) data[el.name] = el.value.trim();
   });
-
   data.role = selectedRoleKey;
   data.roleName = roleKeyMap[selectedRoleKey] || '';
   data.timestamp = new Date().toISOString();
 
-  // Save to localStorage
+  // Save
   var existing = [];
   try { existing = JSON.parse(localStorage.getItem('growthcore_surveys_v2') || '[]'); } catch(err) {}
   existing.push(data);
   localStorage.setItem('growthcore_surveys_v2', JSON.stringify(existing));
 
-  // Try 飞书 webhook
-  var webhookSent = false;
+  // Webhook
   if (FEISHU_WEBHOOK) {
-    var payload = { msg_type: 'text', content: { text: '🦞 新成员申请\n\n角色: ' + data.roleName + '\n昵称: ' + (data.name || '') + '\n微信: ' + (data.wechat || '') + '\n城市: ' + (data.city || '') + '\n职业: ' + (data.occupation || '') + '\nAI频率: ' + (data.aiFrequency || '') + '\nAI工具: ' + (data.aiTools || '') + '\n来源: ' + (data.source || '') + '\n想获得: ' + (data.goal || '') + '\n时间: ' + data.timestamp } };
     try {
-      fetch(FEISHU_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      webhookSent = true;
+      fetch(FEISHU_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ msg_type: 'text', content: { text: '🦞 新成员申请\n\n角色: ' + data.roleName + '\n昵称: ' + data.nickname + '\n微信: ' + data.wechat + '\n城市: ' + data.city + '\n职业: ' + data.occupation + '\nAI频率: ' + data.aiFrequency + '\nAI工具: ' + data.aiTools + '\n来源: ' + data.source + '\n想获得: ' + data.goal + '\n时间: ' + data.timestamp } }) });
     } catch(err) {}
   }
 
-  // Show thanks
+  // Success — close modal, show brief alert-style feedback
   setTimeout(function(){
-    document.getElementById('surveyFormWrap').style.display = 'none';
-    var thanksMsg = document.getElementById('surveyThanks');
-    thanksMsg.classList.add('active');
-    if (webhookSent) {
-      thanksMsg.querySelector('.survey-thanks-desc').innerHTML = '感谢你花时间填写问卷。<br>我们会尽快通过微信联系你，把你拉入社群频道。<br>互信值之旅，正式开始 🦞';
-    } else {
-      thanksMsg.querySelector('.survey-thanks-desc').innerHTML = '感谢你花时间填写问卷。<br>我们会尽快通过微信联系你，把你拉入社群频道。<br><small style="color:var(--ink-tertiary)">（数据已本地保存，网络恢复后同步）</small><br>互信值之旅，正式开始 🦞';
-    }
     btn.textContent = '提交问卷 🦞';
     btn.disabled = false;
+    closeSurvey();
+    // Brief toast
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;padding:14px 28px;border-radius:12px;z-index:99999;font-size:16px;box-shadow:0 4px 24px rgba(0,0,0,0.2);text-align:center;';
+    toast.textContent = '✅ 提交成功！我们会通过微信联系你 🦞';
+    document.body.appendChild(toast);
+    setTimeout(function(){ toast.remove(); }, 3500);
   }, 300);
-}
 
-document.getElementById('joinCta').addEventListener('click', function(e) {
-  e.preventDefault();
-  triggerFlowers(e);
-  setTimeout(function() {
-    if (selectedRoleKey) openSurvey(selectedRoleKey);
-    else openSurvey('builder');
-  }, 600);
-});
+  return false;
+}
 </script>
 
 </body>
