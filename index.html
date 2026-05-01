@@ -2627,7 +2627,9 @@ footer p {
     <div class="survey-section-label">✍️ 创作者专属</div>
     <div class="survey-field"><label>创作方向（多选）</label>
       <div class="multi-tags" data-multi="creatorDirection" data-multi-required>
-        <span class="multi-tag" data-value="写作/公众号">写作/公众号</span><span class="multi-tag" data-value="小红书">小红书</span><span class="multi-tag" data-value="视频/B站">视频/B站</span><span class="multi-tag" data-value="播客">播客</span><span class="multi-tag" data-value="即刻/推特">即刻/推特</span>
+        <span class="multi-tag" data-value="写作/公众号">写作/公众号</span><span class="multi-tag" data-value="小红书">小红书</span><span class="multi-tag" data-value="视频/B站">视频/B站</span><span class="multi-tag" data-value="播客">播客</span><span class="multi-tag" data-value="即刻">即刻</span><span class="multi-tag" data-value="推特">推特</span>
+        <span class="multi-tag multi-tag-custom" id="creatorCustomAdd" style="border:dashed 1px var(--ink-tertiary);color:var(--ink-secondary);">+ 自定义</span>
+        <input type="text" id="creatorCustomInput" style="display:none;flex:1;min-width:120px;background:transparent;border:none;outline:none;font-size:inherit;color:var(--ink);padding:2px 4px;" placeholder="输入后回车…">
       </div>
       <input type="hidden" name="creatorDirection" data-hidden>
     </div>
@@ -2919,6 +2921,52 @@ function initAllMultiTags() {
   document.querySelectorAll('#surveyForm .multi-tags').forEach(function(g){ initMultiTags(g); });
 }
 initAllMultiTags();
+// Creator 自定义输入
+(function(){
+  var addBtn = document.getElementById('creatorCustomAdd');
+  var input = document.getElementById('creatorCustomInput');
+  if (!addBtn || !input) return;
+  var container = document.querySelector('.multi-tags[data-multi="creatorDirection"]');
+  addBtn.addEventListener('click', function(){
+    addBtn.style.display = 'none';
+    input.style.display = '';
+    input.focus();
+  });
+  input.addEventListener('blur', function(){
+    if (!this.value.trim()) {
+      this.style.display = 'none';
+      addBtn.style.display = '';
+    }
+  });
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      var val = this.value.trim();
+      if (!val) return;
+      if (container.querySelector('.multi-tag[data-value="' + val.replace(/"/g, '&quot;') + '"]')) {
+        this.value = '';
+        return;
+      }
+      var newTag = document.createElement('span');
+      newTag.className = 'multi-tag active';
+      newTag.setAttribute('data-value', val);
+      newTag.textContent = val + ' ×';
+      newTag.addEventListener('click', function(){
+        this.remove();
+        syncMultiHidden(container);
+      });
+      container.insertBefore(newTag, addBtn);
+      this.value = '';
+      syncMultiHidden(container);
+      this.focus();
+    }
+    if (e.key === 'Escape') {
+      this.value = '';
+      this.style.display = 'none';
+      addBtn.style.display = '';
+    }
+  });
+})();
 
 function openSurvey(roleKey) {
   var overlay = document.getElementById('surveyOverlay');
