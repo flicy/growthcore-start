@@ -2612,9 +2612,11 @@ footer p {
       <div class="multi-tags" data-multi="strategistDomain">
         <span class="multi-tag" data-value="增长策略">增长策略</span><span class="multi-tag" data-value="用户运营">用户运营</span><span class="multi-tag" data-value="0-1 启动">0-1 启动</span><span class="multi-tag" data-value="变现/商业化">变现/商业化</span><span class="multi-tag" data-value="数据驱动">数据驱动</span>
       </div>
-      <input type="hidden" name="strategistDomain" data-hidden>
+      <input type="hidden" name="strategistDomain" data-hidden required>
     </div>
-    <div class="survey-field"><label>你负责的产品/业务</label><input type="text" name="strategistProduct" placeholder="一句话描述"></div>
+    <div class="survey-field"><label>你负责的产品/业务 *</label><input type="text" name="strategistProduct" placeholder="一句话描述" required>
+      <div class="field-error"></div>
+    </div>
     <div class="survey-field"><label>你操盘过的增长案例（可选）</label><input type="text" name="strategistCase" placeholder="一句话描述"></div>
   </div>
 
@@ -2625,11 +2627,11 @@ footer p {
       <div class="multi-tags" data-multi="creatorDirection">
         <span class="multi-tag" data-value="写作/公众号">写作/公众号</span><span class="multi-tag" data-value="小红书">小红书</span><span class="multi-tag" data-value="视频/B站">视频/B站</span><span class="multi-tag" data-value="播客">播客</span><span class="multi-tag" data-value="即刻/推特">即刻/推特</span>
       </div>
-      <input type="hidden" name="creatorDirection" data-hidden>
+      <input type="hidden" name="creatorDirection" data-hidden required>
     </div>
     <div class="survey-field"><label>最满意的作品链接（可选）</label><input type="text" name="creatorWork" placeholder="链接"></div>
     <div class="survey-field"><label>创作频率</label>
-      <select class="enum-select" name="creatorFrequency"><option value="" disabled selected>请选择</option><option value="几乎每天">几乎每天</option><option value="每周几次">每周几次</option><option value="偶尔">偶尔</option><option value="还在找感觉">还在找感觉</option></select>
+      <select class="enum-select" name="creatorFrequency" required><option value="" disabled selected>请选择</option><option value="几乎每天">几乎每天</option><option value="每周几次">每周几次</option><option value="偶尔">偶尔</option><option value="还在找感觉">还在找感觉</option></select>
     </div>
   </div>
 
@@ -2833,7 +2835,7 @@ document.getElementById('joinCta').addEventListener('click', function(e) {
 });
 
 // ========== Survey Modal ==========
-var FEISHU_WEBHOOK = '';
+var FEISHU_WEBHOOK = 'https://open.feishu.cn/open-apis/bot/v2/hook/ca33f79a-f7ae-4947-b9f5-2e4450a3311e';
 
 var roleKeyMap = { builder:'构建者', strategist:'策略者', creator:'创作者', explorer:'探索者', learner:'学习者' };
 var selectedRoleKey = '';
@@ -2968,11 +2970,14 @@ function submitSurvey(e) {
   document.querySelectorAll('.field-error').forEach(function(e){ e.classList.remove('show'); e.textContent = ''; });
   document.querySelectorAll('.survey-field.error').forEach(function(e){ e.classList.remove('error'); });
 
-  // Validate
+  // Validate — only check visible required fields (skip hidden role sections)
   var requireds = form.querySelectorAll('[required]');
   var hasError = false;
   var firstEl = null;
   requireds.forEach(function(el){
+    // Skip if inside a non-active role-fields
+    var roleBlock = el.closest('.role-fields');
+    if (roleBlock && !roleBlock.classList.contains('active')) return;
     var val = el.value;
     if (!val || !val.trim()) {
       if (!hasError) firstEl = el;
