@@ -1651,6 +1651,11 @@ footer p {
 .enum-select { width: 100%; padding: 12px 16px; border: 1.5px solid var(--ink-faint); border-radius: var(--radius-xs); font-size: 15px; background: var(--bg-card); color: var(--ink); font-family: inherit; outline: none; cursor: pointer; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23A1A1AA' stroke-width='1.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; box-sizing: border-box; }
 .enum-select:focus { border-color: var(--accent); }
 
+/* Inline field error */
+.field-error { display: none; color: var(--accent); font-size: 13px; margin-top: 4px; }
+.field-error.show { display: block; }
+.survey-field.error input, .survey-field.error select { border-color: var(--accent); }
+
 /* Multi-select tags */
 .multi-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .multi-tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1.5px solid var(--ink-faint); border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; user-select: none; white-space: nowrap; }
@@ -2472,7 +2477,7 @@ footer p {
     </div>
 
     <div class="survey-modal-body" id="surveyFormWrap">
-      <form id="surveyForm" onsubmit="submitSurvey(event)">
+      <form id="surveyForm" onsubmit="submitSurvey(event)" novalidate>
 
         <div class="survey-section-label">基本信息</div>
 
@@ -2531,41 +2536,40 @@ footer p {
           <div class="multi-tags" id="aiToolsTags">
             <span class="multi-tag" data-value="ChatGPT">ChatGPT</span>
             <span class="multi-tag" data-value="Claude">Claude</span>
+            <span class="multi-tag" data-value="Claude Code">Claude Code</span>
+            <span class="multi-tag" data-value="Grok">Grok</span>
             <span class="multi-tag" data-value="Gemini">Gemini</span>
             <span class="multi-tag" data-value="DeepSeek">DeepSeek</span>
-            <span class="multi-tag" data-value="豆包">豆包</span>
             <span class="multi-tag" data-value="Kimi">Kimi</span>
+            <span class="multi-tag" data-value="豆包">豆包</span>
             <span class="multi-tag" data-value="通义千问">通义千问</span>
-            <span class="multi-tag" data-value="文心一言">文心一言</span>
             <span class="multi-tag" data-value="Cursor">Cursor</span>
             <span class="multi-tag" data-value="GitHub Copilot">GitHub Copilot</span>
             <span class="multi-tag" data-value="Windsurf">Windsurf</span>
             <span class="multi-tag" data-value="Bolt">Bolt</span>
-            <span class="multi-tag" data-value="v0">v0</span>
             <span class="multi-tag" data-value="Midjourney">Midjourney</span>
-            <span class="multi-tag" data-value="DALL·E">DALL·E</span>
             <span class="multi-tag" data-value="Suno">Suno</span>
             <span class="multi-tag" data-value="Notion AI">Notion AI</span>
             <span class="multi-tag" data-value="Coze">Coze</span>
             <span class="multi-tag" data-value="Dify">Dify</span>
             <span class="multi-tag" data-value="Cola">Cola</span>
+            <input type="hidden" name="aiTools" data-hidden>
           </div>
-          <input type="text" class="multi-custom" id="aiToolsCustom" name="aiToolsCustom" placeholder="其他工具（自填，回车添加）" style="margin-top:8px;">
-          <input type="hidden" name="aiTools" id="aiToolsHidden">
+          <input type="text" class="multi-custom" data-for="aiToolsTags" placeholder="其他工具（自填，回车添加）" style="margin-top:8px;">
+          <div class="field-error" data-error="aiTools"></div>
         </div>
 
         <div class="survey-field">
           <label>从哪里知道 GrowthCore？（多选）</label>
           <div class="multi-tags" id="sourceTags">
-            <span class="multi-tag" data-value="小红书">小红书</span>
             <span class="multi-tag" data-value="即刻">即刻</span>
             <span class="multi-tag" data-value="朋友圈">朋友圈</span>
             <span class="multi-tag" data-value="朋友推荐">朋友推荐</span>
             <span class="multi-tag" data-value="OpenClaw社群">OpenClaw 社群</span>
-            <span class="multi-tag" data-value="GitHub">GitHub</span>
+            <input type="hidden" name="source" data-hidden>
           </div>
-          <input type="text" class="multi-custom" id="sourceCustom" name="sourceCustom" placeholder="其他渠道（自填）" style="margin-top:8px;">
-          <input type="hidden" name="source" id="sourceHidden">
+          <input type="text" class="multi-custom" data-for="sourceTags" placeholder="其他渠道（自填，回车添加）" style="margin-top:8px;">
+          <div class="field-error" data-error="source"></div>
         </div>
 
         <!-- Role-specific fields -->
@@ -2843,23 +2847,33 @@ var CITIES = ['北京','上海','广州','深圳','杭州','成都','武汉','�
 
 // Multi-tag toggle for all .multi-tags groups
 function initMultiTags(container) {
-  var tags = container.querySelectorAll('.multi-tag');
   var hidden = container.querySelector('[data-hidden]');
-  var customInput = container.parentElement.querySelector('.multi-custom');
+  var tags = container.querySelectorAll('.multi-tag');
+  var customInput = null;
+  // Find associated custom input via data-for attribute or sibling search
+  var forId = container.id;
+  if (forId) {
+    customInput = document.querySelector('.multi-custom[data-for="' + forId + '"]');
+  }
+  if (!customInput) {
+    customInput = container.parentElement.querySelector('.multi-custom');
+  }
+
   tags.forEach(function(tag){
     tag.addEventListener('click', function(){
       this.classList.toggle('active');
       syncMultiHidden(container);
     });
   });
-  if (customInput) {
+
+  if (customInput && !customInput._inited) {
+    customInput._inited = true;
     customInput.addEventListener('keydown', function(e){
       if (e.key === 'Enter') {
         e.preventDefault();
         var val = this.value.trim();
         if (!val) return;
-        // Check if already exists as a tag
-        var existing = container.querySelector('.multi-tag[data-value="' + val + '"]');
+        var existing = container.querySelector('.multi-tag[data-value="' + val.replace(/"/g, '&quot;') + '"]');
         if (!existing) {
           var newTag = document.createElement('span');
           newTag.className = 'multi-tag active';
@@ -2883,10 +2897,11 @@ function syncMultiHidden(container) {
   hidden.value = vals.join(',');
 }
 
-// Init all multi-select groups in the form
-document.querySelectorAll('#surveyForm .multi-tags').forEach(function(g){ initMultiTags(g); });
-// Init standalone multi-selects inside role-fields
-document.querySelectorAll('.role-fields .multi-tags').forEach(function(g){ initMultiTags(g); });
+// Init all multi-select groups
+function initAllMultiTags() {
+  document.querySelectorAll('#surveyForm .multi-tags').forEach(function(g){ initMultiTags(g); });
+}
+initAllMultiTags();
 
 function openSurvey(roleKey) {
   var overlay = document.getElementById('surveyOverlay');
@@ -2905,9 +2920,19 @@ function openSurvey(roleKey) {
 
   // Reset all role fields
   document.querySelectorAll('.role-fields').forEach(function(el){ el.classList.remove('active'); });
-  // Reset multi-tags
+  // Reset all multi-tags — deactivate and remove custom tags
   document.querySelectorAll('#surveyForm .multi-tag.active').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('#surveyForm .multi-tag').forEach(function(t){
+    // Remove dynamically added custom tags (not in original HTML dataset)
+    if (!t.hasAttribute('data-orig')) {
+      t.setAttribute('data-orig', '1');
+    }
+  });
+  // Sync all hidden inputs to empty
   document.querySelectorAll('#surveyForm [data-hidden]').forEach(function(h){ h.value = ''; });
+  // Clear field errors
+  document.querySelectorAll('.field-error').forEach(function(e){ e.classList.remove('show'); e.textContent = ''; });
+  document.querySelectorAll('.survey-field.error').forEach(function(e){ e.classList.remove('error'); });
 
   // Show role-specific fields
   var roleFieldMap = {
@@ -2947,14 +2972,33 @@ function submitSurvey(e) {
   e.preventDefault();
   var form = e.target;
   var btn = document.getElementById('surveySubmitBtn');
+
+  // Clear previous errors
+  document.querySelectorAll('.field-error').forEach(function(e){ e.classList.remove('show'); e.textContent = ''; });
+  document.querySelectorAll('.survey-field.error').forEach(function(e){ e.classList.remove('error'); });
+
+  // Validate required fields
+  var requireds = form.querySelectorAll('[required]');
+  var hasError = false;
+  requireds.forEach(function(el){
+    if (!el.value.trim()) {
+      hasError = true;
+      var field = el.closest('.survey-field');
+      if (field) field.classList.add('error');
+      var errEl = field ? field.querySelector('.field-error') : null;
+      if (errEl) { errEl.textContent = '请填写此项'; errEl.classList.add('show'); }
+    }
+  });
+  if (hasError) return;
+
   btn.textContent = '提交中…';
   btn.disabled = true;
 
   var data = {};
 
-  // Collect all text, select, hidden inputs
+  // Collect all inputs
   form.querySelectorAll('input[type="text"], input[type="hidden"], textarea, select').forEach(function(el){
-    if (el.name && el.value && el.value.trim()) {
+    if (el.name && el.value.trim()) {
       data[el.name] = el.value.trim();
     }
   });
@@ -2963,26 +3007,35 @@ function submitSurvey(e) {
   data.roleName = roleKeyMap[selectedRoleKey] || '';
   data.timestamp = new Date().toISOString();
 
-  // Save to localStorage (always)
+  // Save to localStorage
   var existing = [];
   try { existing = JSON.parse(localStorage.getItem('growthcore_surveys_v2') || '[]'); } catch(err) {}
   existing.push(data);
   localStorage.setItem('growthcore_surveys_v2', JSON.stringify(existing));
 
   // Try 飞书 webhook
+  var webhookSent = false;
   if (FEISHU_WEBHOOK) {
-    fetch(FEISHU_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ msg_type: 'interactive', card: { header: { title: { tag: 'plain_text', content: '🦞 新成员申请' } }, elements: [{ tag: 'div', text: { tag: 'plain_text', content: JSON.stringify(data, null, 2) } }] } })
-    }).catch(function(){});
+    var payload = { msg_type: 'text', content: { text: '🦞 新成员申请\n\n角色: ' + data.roleName + '\n昵称: ' + (data.name || '') + '\n微信: ' + (data.wechat || '') + '\n城市: ' + (data.city || '') + '\n职业: ' + (data.occupation || '') + '\nAI频率: ' + (data.aiFrequency || '') + '\nAI工具: ' + (data.aiTools || '') + '\n来源: ' + (data.source || '') + '\n想获得: ' + (data.goal || '') + '\n时间: ' + data.timestamp } };
+    try {
+      fetch(FEISHU_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      webhookSent = true;
+    } catch(err) {}
   }
 
   // Show thanks
-  document.getElementById('surveyFormWrap').style.display = 'none';
-  document.getElementById('surveyThanks').classList.add('active');
-  btn.textContent = '提交问卷 🦞';
-  btn.disabled = false;
+  setTimeout(function(){
+    document.getElementById('surveyFormWrap').style.display = 'none';
+    var thanksMsg = document.getElementById('surveyThanks');
+    thanksMsg.classList.add('active');
+    if (webhookSent) {
+      thanksMsg.querySelector('.survey-thanks-desc').innerHTML = '感谢你花时间填写问卷。<br>我们会尽快通过微信联系你，把你拉入社群频道。<br>互信值之旅，正式开始 🦞';
+    } else {
+      thanksMsg.querySelector('.survey-thanks-desc').innerHTML = '感谢你花时间填写问卷。<br>我们会尽快通过微信联系你，把你拉入社群频道。<br><small style="color:var(--ink-tertiary)">（数据已本地保存，网络恢复后同步）</small><br>互信值之旅，正式开始 🦞';
+    }
+    btn.textContent = '提交问卷 🦞';
+    btn.disabled = false;
+  }, 300);
 }
 
 document.getElementById('joinCta').addEventListener('click', function(e) {
