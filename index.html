@@ -3079,7 +3079,7 @@ function submitSurvey(e) {
 
   // 提交到本地代理 → 飞书多维表格
   try {
-    fetch('http://localhost:3456/submit', {
+    fetch('https://start-growthos.pages.dev/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
