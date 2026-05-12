@@ -3077,29 +3077,131 @@ function submitSurvey(e) {
   existing.push(data);
   localStorage.setItem('growthcore_surveys_v2', JSON.stringify(existing));
 
-  // 提交到本地代理 → 飞书多维表格
-  try {
-    fetch('https://start-growthos.pages.dev/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).catch(function(){});
-  } catch(err) {}
-
-  // Success — close modal, show brief alert-style feedback
-  setTimeout(function(){
+  // 直连飞书 Bitable API（带重试）
+  submitToFeishu(data).then(function(ok){
     btn.textContent = '提交问卷 🦞';
     btn.disabled = false;
-    closeSurvey();
-    // Brief toast
-    var toast = document.createElement('div');
-    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;padding:14px 28px;border-radius:12px;z-index:99999;font-size:16px;box-shadow:0 4px 24px rgba(0,0,0,0.2);text-align:center;';
-    toast.textContent = '✅ 提交成功！我们会通过微信联系你 🦞';
-    document.body.appendChild(toast);
-    setTimeout(function(){ toast.remove(); }, 3500);
-  }, 300);
+    if (ok) {
+      closeSurvey();
+      var toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;padding:14px 28px;border-radius:12px;z-index:99999;font-size:16px;box-shadow:0 4px 24px rgba(0,0,0,0.2);text-align:center;';
+      toast.textContent = '✅ 提交成功！我们会通过微信联系你 🦞';
+      document.body.appendChild(toast);
+      setTimeout(function(){ toast.remove(); }, 3500);
+    } else {
+      alert('提交失败，请检查网络后重试。如持续失败请联系管理员。');
+    }
+  });
 
   return false;
+}
+
+// --- 飞书 Bitable 直连 ---
+var __feishuToken = null;
+var __feishuTokenExpires = 0;
+
+function getFeishuToken() {
+  if (__feishuToken && Date.now() < __feishuTokenExpires) {
+    return Promise.resolve(__feishuToken);
+  }
+  return fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ app_id: 'cli_a97eba2c6738dcca', app_secret: '5hGjcvCs3wWV9n7iJU4Kbg2YeTFcTtfZ' })
+  }).then(function(res){ return res.json(); }).then(function(d){
+    __feishuToken = d.tenant_access_token;
+    __feishuTokenExpires = Date.now() + (d.expire - 300) * 1000;
+    return __feishuToken;
+  });
+}
+
+function mapFormToFields(formData) {
+  var text = function(v){ return v || ''; };
+  var single = function(v){ return v || ''; };
+  var multi = function(v){
+    if (!v) return [];
+    return v.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  };
+  var url = function(v){ return v ? { link: v, text: v } : null; };
+
+  var raw = {
+    '昵称': text(formData.nickname),
+    '微信号': text(formData.wechat),
+    '所在城市': text(formData.city),
+    '职业': text(formData.occupation),
+    '最满意的产品': text(formData.builderProduct),
+    '在做的项目': text(formData.builderProject),
+    '负责的产品或业务': text(formData.strategistProduct),
+    '增长案例': text(formData.strategistCase),
+    '最想学什么': text(formData.learnerInterest),
+    'AI使用频率': single(formData.aiFrequency),
+    '来源渠道': single(formData.source),
+    '角色': single(formData.role),
+    'AI写代码频率': single(formData.builderAICode),
+    '创作频率': single(formData.creatorFrequency),
+    '行业': single(formData.explorerIndustry),
+    'AI了解程度': single(formData.learnerLevel),
+    'AI工具': multi(formData.aiTools),
+    '技术栈': multi(formData.builderTech),
+    '擅长领域': multi(formData.strategistDomain),
+    '创作方向': multi(formData.creatorDirection),
+    '熟悉的业务场景': multi(formData.explorerScenario),
+    '其他领域经验': multi(formData.learnerBackground),
+    '想在社群中获得什么': multi(formData.goal),
+    '提交时间': Date.now(),
+    'GitHub主页': url(formData.builderGitHub),
+    '满意作品链接': url(formData.creatorWork),
+    '经验年限': formData.explorerYears ? Number(formData.explorerYears) : null
+  };
+
+  var fields = {};
+  for (var k in raw) {
+    var v = raw[k];
+    if (v !== null && v !== undefined && v !== '') fields[k] = v;
+  }
+  return fields;
+}
+
+function writeFeishuRecord(token, fields) {
+  return fetch('https://open.feishu.cn/open-apis/bitable/v1/apps/TCFFwMWvyiFzl0kas4Gcm6sqn8c/tables/tblKnOW2DJivJXB5/records', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ fields: fields })
+  }).then(function(res){ return res.json(); }).then(function(d){
+    return d.code === 0;
+  });
+}
+
+function submitToFeishu(formData) {
+  var fields = mapFormToFields(formData);
+  return getFeishuToken().then(function(token){
+    return writeFeishuRecord(token, fields);
+  }).then(function(ok){
+    if (ok) return true;
+    // 重试一次（等 2 秒）
+    return new Promise(function(resolve){
+      setTimeout(function(){
+        // token 可能过期，重新获取
+        __feishuToken = null;
+        getFeishuToken().then(function(token2){
+          return writeFeishuRecord(token2, fields);
+        }).then(resolve).catch(function(){ resolve(false); });
+      }, 2000);
+    });
+  }).catch(function(){
+    // 第一次异常，等 2 秒重试
+    return new Promise(function(resolve){
+      setTimeout(function(){
+        __feishuToken = null;
+        getFeishuToken().then(function(token2){
+          return writeFeishuRecord(token2, fields);
+        }).then(resolve).catch(function(){ resolve(false); });
+      }, 2000);
+    });
+  });
 }
 </script>
 
